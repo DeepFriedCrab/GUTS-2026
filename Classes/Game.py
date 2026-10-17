@@ -109,22 +109,22 @@ class Game:
             match (self.p1.boxstate, self.p2.boxstate):
                 case (BoxState.REST, BoxState.DAMAGE):
                     # damage p1
-                    self.p1.set_state(State.HURT)
-                    self.p1.damage()
-                    self.p1.bounce()
+                    if self.p1.parryTimer > 50: 
+                        self.p1.set_state(State.HURT)
+                        self.p1.damage()
+                        self.p1.bounce()
                 case (BoxState.DAMAGE, BoxState.REST):
                     # damage p2
-                    self.p2.set_state(State.HURT)
-                    self.p2.damage()
-                    self.p2.bounce()
+                    if self.p2.parryTimer > 50: 
+                        self.p2.set_state(State.HURT)
+                        self.p2.damage()
+                        self.p2.bounce()
                 case (BoxState.BLOCK, BoxState.DAMAGE):
                     # parry doesnt carry tired state
-                    print("P1 BLOCKED")
-                    pass
+                    self.p1.parryTimer = 0
                 case (BoxState.DAMAGE, BoxState.BLOCK):
                     # parry doesnt carry tired state
-                    print("P2 BLOCKED")
-                    pass
+                    self.p2.parryTimer = 0
                 case (BoxState.DAMAGE, BoxState.DAMAGE):
                     # bounce apart when two attacks meet
                     self.p1.bounce()
