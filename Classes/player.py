@@ -41,9 +41,6 @@ HOP_FRICTION = 0.9
 HURT_SPEED = 9
 HURT_FRICTION = 0.85
 
-TIRED_SPEED = 0
-TIRED_FRICTION = 0
-
 
 class Player(pygame.sprite.Sprite):
     aabb: AABB
@@ -150,11 +147,12 @@ class Player(pygame.sprite.Sprite):
 
     def tick(self, dt):
         # check for a dash move
+        parry = self.check_parry(self.press_dict)
         l_dash = self.increment_timers(self.press_dict["l"])
         r_dash = self.increment_timers(self.press_dict["r"])
 
         self.state_time += dt
-        self._update_state()
+        self._update_state(parry)
         self._update_velocity(l_dash, r_dash)
         self.x += self.vx
         self.y += self.vy
@@ -185,23 +183,37 @@ class Player(pygame.sprite.Sprite):
 
         return dash_found
 
+    # returns if a parry is detected based on keypresses
+    def check_parry(self, dicty):
+        return dicty["l"]["down"] and dicty["r"]["down"] and dicty["l"]["held_time"] < self.held_cap and dicty["r"]["held_time"] < self.held_cap
+
     def _input_direction(self):
         return int(self.press_dict["r"]["down"]) - int(self.press_dict["l"]["down"])
 
-    def _update_state(self):
+    def _update_state(self, parry=False):
+        print(self.state)
         if self.free:
             direction = self._input_direction()
-            if direction == 0:
-                new_state = State.IDLE
-            elif direction == self.facing.value:
-                new_state = State.FORWARD_WALK
-            else:
-                new_state = State.BACKWARD_WALK
+            match (int(self.press_dict["r"]["down"]), int(self.press_dict["l"]["down"])):
+                case (0, 0):
+                    new_state = State.IDLE
+                case (1, 0):
+                    new_state = State.FORWARD_WALK
+                case (0, 1):
+                    new_state = State.BACKWARD_WALK
+                case (1, 1):
+                    if parry:
+                        new_state = State.PARRY
+                    else:
+                        new_state = self.state
+
             if new_state != self.state:
                 self.set_state(new_state)
 
         elif self.state_time >= self.state_length:
             if self.state == State.DASH_RIGHT or self.state == State.DASH_LEFT:
+                self.set_state(State.TIRED)
+            elif self.state == State.PARRY:
                 self.set_state(State.TIRED)
             else:
                 self.set_state(State.IDLE)
@@ -229,7 +241,7 @@ class Player(pygame.sprite.Sprite):
             case State.HURT:
                 self.vx *= HURT_FRICTION
             case State.TIRED:
-                self.vx *= TIRED_FRICTION
+                self.vx *= 0
 
         if abs(self.vx) < 0.01:
             self.vx = 0
