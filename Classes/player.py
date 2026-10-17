@@ -2,7 +2,7 @@ from enum import Enum
 
 import pygame
 
-from classes.aabb import AABB
+from Classes.aabb import AABB
 
 class Facing(Enum):
     RIGHT = 0
