@@ -1,10 +1,10 @@
 import pygame
-from Classes.player import Player, Facing, BoxState,State, fill, load_frames
+from Classes.player import Player, Facing, BoxState,State
 from Classes.healthBar import HealthBar
 from Classes.Logo import Logo
 
 class Game:
-    window_dimensions =  (1920, 1080)
+    window_dimensions =  (1500, 1000)
     ground_y = 4*window_dimensions[1]/5 
 
     healthbarL = HealthBar("L",window_dimensions[0])
@@ -19,9 +19,12 @@ class Game:
 
         self.all_sprites_list = pygame.sprite.Group()
        
-        self.p1 = Player( 50, 490, Facing.LEFT)
-        self.p2 = Player( 1600, 490, Facing.RIGHT)
-
+        self.p1 = Player( 0, 0, Facing.LEFT)
+        self.p2 = Player( 0, 0, Facing.RIGHT)
+        self.p1.x = 50
+        self.p2.x = self.window_dimensions[0] - 50 - self.p2.aabb.w
+        self.p1.rect.y = self.ground_y - self.p1.aabb.h + 70
+        self.p2.rect.y = self.ground_y - self.p2.aabb.h + 70
         # Who's facing right
         self.facing_right = "p2"
 
@@ -104,9 +107,10 @@ class Game:
 
             # ------------ drawing stuff ------------- #
             self.screen.fill(self.background_colour)
+            self.all_sprites_list.draw(self.screen)
             pygame.draw.rect(self.screen, (40,40,40), pygame.Rect(0,self.ground_y, self.window_dimensions[0] , self.window_dimensions[1] - self.ground_y + 1 ))
 
-            self.all_sprites_list.draw(self.screen)
+            
             pygame.display.flip()
 
         pygame.quit()
@@ -136,6 +140,9 @@ class Game:
                 self.p2.press_dict["r"]["down"] = False
 
     def handle_collision(self):
+        if self.p1.state == State.DEAD or self.p2.state == State.DEAD:
+            return 
+
         if self.p1.aabb.is_overlapping(self.p2.aabb):
             match (self.p1.boxstate, self.p2.boxstate):
                 case (BoxState.REST, BoxState.DAMAGE):
@@ -159,10 +166,15 @@ class Game:
                 case (BoxState.BLOCK, BoxState.DAMAGE):
                     # parry doesnt carry tired state
                     self.p1.parryTimer = 0
-                    self.p1
+                    self.p1.set_state(State.SUCCESSFUL_PARRY)
+
+
                 case (BoxState.DAMAGE, BoxState.BLOCK):
                     # parry doesnt carry tired state
                     self.p2.parryTimer = 0
+                    self.p2.set_state(State.SUCCESSFUL_PARRY)
+                    
+
                 case (BoxState.DAMAGE, BoxState.DAMAGE):
                     # bounce apart when two attacks meet
                     self.p1.bounce()
