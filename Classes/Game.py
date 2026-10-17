@@ -34,7 +34,7 @@ class Game:
         self.sheet = SpriteSheet(os.path.join('Assets', 'stickman_test.png'), scale=2)
         floor_y = self.ground_y - self.sheet.size[1]
         self.p1 = Player(self.sheet, 50, floor_y)
-        self.p2 = Player(self.sheet, 450, floor_y, Facing.LEFT)
+        #self.p2 = Player(self.sheet, 450, floor_y, Facing.LEFT)
 
         self.all_sprites_list.add(self.p1)
         self.all_sprites_list.add(self.healthbarL)
@@ -61,12 +61,11 @@ class Game:
             
             # tick player logic
             self.p1.tick(dt)
-            self.p2.tick(dt)
+            #self.p2.tick(dt)
 
             self.screen.fill(self.background_colour)
             pygame.draw.rect(self.screen, (0,0,0), pygame.Rect(0,self.ground_y, self.window_dimensions[0] , self.window_dimensions[1] - self.ground_y + 1 ))
 
-            #box = self.all_sprites_list.sprites()[0].move()
             self.all_sprites_list.draw(self.screen)
             pygame.display.flip()
 
@@ -80,28 +79,18 @@ class Game:
                 self.p1.press_dict["r"]["down"] = True
                 
             case pygame.K_j:
-                self.p1.lunge()
-            case pygame.K_k:
-                print("k has been pressed")
-                self.p1.parry()
+                print("j has been pressed")
             case pygame.K_l:
                 print("l has been pressed")
-                self.p1.hop_back()
-            case pygame.K_h:
-                print("h has been pressed")
-                self.p1.hurt()
-            case _:
-                print("Another key has been pressed")
 
     def parse_keyup(self, key):
-            match key:
-                case pygame.K_a:
-                    self.p1.press_dict["l"]["down"] = False
-                case pygame.K_d:
-                    self.p1.press_dict["r"]["down"] = False
-                case pygame.K_j:
-                    print("j has been lifted")
-                case pygame.K_l:
-                    print("l has been lifted")
-                case _:
-                    print("Another key has been lifted")
+        match key:
+            case pygame.K_a:
+                self.p1.press_dict["l"]["down"] = False
+            case pygame.K_d:
+                self.p1.press_dict["r"]["down"] = False
+                
+            case pygame.K_j:
+                print("j has been lifted")
+            case pygame.K_l:
+                print("l has been lifted")
