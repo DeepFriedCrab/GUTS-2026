@@ -47,9 +47,13 @@ HURT_FRICTION = 0.85
 
 
 def load_frames(folder_dir):
+    files = []
+    for image in os.listdir(folder_dir):
+        files.append(image)
+    
     frames = []
-    for images in os.listdir(folder_dir):
-        frames.append(pygame.image.load(folder_dir+"/"+images))
+    for image in sorted(files):
+        frames.append(pygame.image.load(folder_dir+"/"+image))
     return frames
 
 
