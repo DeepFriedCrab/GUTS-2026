@@ -33,12 +33,14 @@ class Game:
         self.all_sprites_list = pygame.sprite.Group()
         self.sheet = SpriteSheet(os.path.join('Assets', 'stickman_test.png'), scale=2)
         floor_y = self.ground_y - self.sheet.size[1]
+
+        # spawn players
         self.p1 = Player(self.sheet, 50, floor_y)
-        #self.p2 = Player(self.sheet, 450, floor_y, Facing.LEFT)
+        self.p2 = Player(self.sheet, 450, floor_y, Facing.LEFT)
 
         self.all_sprites_list.add(self.p1)
+        self.all_sprites_list.add(self.p2)
         self.all_sprites_list.add(self.healthbarL)
-
         self.all_sprites_list.add(self.healthbarR)
         
     def run(self):
@@ -61,7 +63,7 @@ class Game:
             
             # tick player logic
             self.p1.tick(dt)
-            #self.p2.tick(dt)
+            self.p2.tick(dt)
 
             self.screen.fill(self.background_colour)
             pygame.draw.rect(self.screen, (0,0,0), pygame.Rect(0,self.ground_y, self.window_dimensions[0] , self.window_dimensions[1] - self.ground_y + 1 ))
@@ -79,9 +81,9 @@ class Game:
                 self.p1.press_dict["r"]["down"] = True
                 
             case pygame.K_j:
-                print("j has been pressed")
+                self.p2.press_dict["l"]["down"] = True
             case pygame.K_l:
-                print("l has been pressed")
+                self.p2.press_dict["r"]["down"] = True
 
     def parse_keyup(self, key):
         match key:
@@ -89,8 +91,8 @@ class Game:
                 self.p1.press_dict["l"]["down"] = False
             case pygame.K_d:
                 self.p1.press_dict["r"]["down"] = False
-                
+
             case pygame.K_j:
-                print("j has been lifted")
+                self.p2.press_dict["l"]["down"] = False
             case pygame.K_l:
-                print("l has been lifted")
+                self.p2.press_dict["r"]["down"] = False
