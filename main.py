@@ -1,6 +1,8 @@
 import pygame
 from Classes.player import Player
 
+pygame.init()
+
 background_colour = (255,255,255)
 (width, height) = (300, 200)
 
