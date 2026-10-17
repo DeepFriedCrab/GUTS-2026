@@ -112,6 +112,7 @@ class Player(pygame.sprite.Sprite):
     prevState: State
     boxstate: BoxState
     health: int
+    parryTimer = int
 
     # values to change dash input timing
     held_cap = 15
@@ -128,6 +129,7 @@ class Player(pygame.sprite.Sprite):
         self.aabb = AABB(x, y, self.rect.w, self.rect.h)
         self.boxstate = BoxState.REST
         self.health = 3
+        self.parryTimer = 1000000000000
 
         self.vx = 0
         self.facing = facing
@@ -189,6 +191,7 @@ class Player(pygame.sprite.Sprite):
     def tick(self, dt):
         # check for a dash move
         parry = self.check_parry(self.press_dict)
+        self.parryTimer += 1
         l_dash = self.increment_timers(self.press_dict["l"])
         r_dash = self.increment_timers(self.press_dict["r"])
 
@@ -252,7 +255,8 @@ class Player(pygame.sprite.Sprite):
         elif self.state_time >= self.state_length:
             if self.state == State.DASH_FORWARD or self.state == State.DASH_BACK:
                 self.set_state(State.TIRED)
-            elif self.state == State.PARRY:
+            elif self.state == State.PARRY and self.parryTimer > 50:
+                print("block")
                 self.set_state(State.TIRED)
             else:
                 self.set_state(State.IDLE)
