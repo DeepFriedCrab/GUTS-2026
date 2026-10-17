@@ -1,5 +1,5 @@
 import pygame
-from Classes.player import Player, Facing
+from Classes.player import Player, Facing, BoxState
 from Classes.healthBar import HealthBar
 
 
@@ -102,4 +102,27 @@ class Game:
 
     def handle_collision(self, p1, p2):
         if p1.aabb.is_overlapping(p2.aabb):
-            match p1.boxstate
+            match (p1.boxstate, p2.boxstate):
+                case (BoxState.REST, BoxState.DAMAGE):
+                    # damage p1
+                    print("DAMAGE P1")
+                    pass
+                case (BoxState.DAMAGE, BoxState.REST):
+                    # damage p2
+                    print("DAMAGE P2")
+                    pass
+                case (BoxState.BLOCK, BoxState.DAMAGE):
+                    # parry doesnt carry tired state
+                    print("P1 BLOCKED")
+                    pass
+                case (BoxState.DAMAGE, BoxState.BLOCK):
+                    # parry doesnt carry tired state
+                    print("P2 BLOCKED")
+                    pass
+                case (BoxState.DAMAGE, BoxState.DAMAGE):
+                    # bounce apart
+                    print("BOUNCE APART")
+                    pass
+                case _:
+                    print("calm")
+                    pass

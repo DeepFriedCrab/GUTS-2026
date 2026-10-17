@@ -46,15 +46,12 @@ HURT_FRICTION = 0.85
 
 def load_frames(folder_dir):
     frames = []
-    print(folder_dir)
     for images in os.listdir(folder_dir):
-        print(images)
         frames.append(pygame.image.load(folder_dir+"/"+images))
     return frames
 
 def get_asset(x):
     frames = []
-    print(x)
     match x:
         case State.IDLE:
            frames = load_frames("Assets/stick/idle") 
@@ -163,7 +160,6 @@ class Player(pygame.sprite.Sprite):
                 self.boxstate = BoxState.REST
 
     def tick(self, dt):
-        print(self.boxstate)
         # check for a dash move
         parry = self.check_parry(self.press_dict)
         l_dash = self.increment_timers(self.press_dict["l"])
