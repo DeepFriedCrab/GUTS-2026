@@ -1,9 +1,9 @@
 from enum import Enum
 
 import pygame
-
+import os
 from Classes.aabb import AABB
-from Classes.spritesheet import Animator, SpriteSheet
+from Classes.spritesheet import Animator, Animation
 
 class Facing(Enum):
     RIGHT = 1
@@ -39,6 +39,37 @@ HURT_SPEED = 9
 HURT_FRICTION = 0.85
 
 
+def load_frames(folder_dir):
+    frames = []
+    print(folder_dir)
+    for images in os.listdir(folder_dir):
+        print(images)
+        frames.append(pygame.image.load(folder_dir+"/"+images))
+    return frames
+
+def get_asset(x):
+    frames = []
+    print(x)
+    match x:
+        case State.IDLE:
+           frames = load_frames("Assets/stick/idle") 
+        case State.FORWARD_WALK:
+           frames = load_frames("Assets/stick/walkfoward") 
+        case State.BACKWARD_WALK:
+           frames = load_frames("Assets/stick/walkback") 
+        case State.DASH_FORWARD:
+           frames = load_frames("Assets/stick/walkfoward") 
+        case State.DASH_BACK:
+           frames = load_frames("Assets/stick/walkfoward") 
+        case State.PARRY:
+           frames = load_frames("Assets/stick/block") 
+        case State.HURT:
+           frames = load_frames("Assets/stick/walkfoward") 
+        case State.TIRED:
+           frames = load_frames("Assets/stick/walkfoward") 
+    return frames
+
+
 class Player(pygame.sprite.Sprite):
     aabb: AABB
     vx: float
@@ -50,10 +81,12 @@ class Player(pygame.sprite.Sprite):
     held_cap = 15
     since_cap = 15
 
-    def __init__(self, sheet: SpriteSheet, x, y, facing=Facing.RIGHT):
+    def __init__(self , x, y, facing=Facing.RIGHT):
         pygame.sprite.Sprite.__init__(self)
-        self.animator = Animator(sheet)
-        self.image = sheet.get(State.IDLE.value).frames[0]
+        self.set_state(State.IDLE)
+        self.frames = get_asset(self.state)
+        self.animator = Animator(Animation(self.frames, 300,))
+        self.image = self.frames[0]
         self.rect = self.image.get_rect(topleft=(x, y))
         self.aabb = AABB(x, y, self.rect.w, self.rect.h)
 
@@ -78,7 +111,7 @@ class Player(pygame.sprite.Sprite):
 
         self.state_time = 0
         self.state_length = 0
-        self.set_state(State.IDLE)
+
 
     @property
     def x(self):
@@ -109,15 +142,7 @@ class Player(pygame.sprite.Sprite):
     def set_state(self, state: State):
         self.state = state
         self.state_time = 0
-
-        sheet = self.animator.sheet
-        if sheet.has(state.value):
-            self.state_length = sheet.get(state.value).length
-        else:
-            self.state_length = DEFAULT_LENGTHS.get(state, 0)
-
-        self.animator.play(state.value, loop=state in FREE_STATES, restart=True)
-
+        self.state_length = DEFAULT_LENGTHS.get(state,0)
 
     def tick(self, dt):
         # check for a dash move

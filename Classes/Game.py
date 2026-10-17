@@ -1,10 +1,9 @@
 import pygame
 import os
 from Classes.player import Player, Facing
-from Classes.spritesheet import SpriteSheet
 from Classes.healthBar import HealthBar
 
-testface = pygame.image.load(os.path.join('Assets/stickman_test.png'))
+
 
 class Testface(pygame.sprite.Sprite):
 
@@ -31,12 +30,10 @@ class Game:
         pygame.display.set_caption('2Fight')
 
         self.all_sprites_list = pygame.sprite.Group()
-        self.sheet = SpriteSheet(os.path.join('Assets', 'stickman_test.png'), scale=2)
-        floor_y = self.ground_y - self.sheet.size[1]
+       
+        self.p1 = Player( 50, 255, Facing.LEFT)
+        self.p2 = Player( 450, 255, Facing.RIGHT)
 
-        # spawn players
-        self.p1 = Player(self.sheet, 50, floor_y)
-        self.p2 = Player(self.sheet, 450, floor_y, Facing.LEFT)
 
         self.all_sprites_list.add(self.p1)
         self.all_sprites_list.add(self.p2)
