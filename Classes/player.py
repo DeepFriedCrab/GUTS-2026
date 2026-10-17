@@ -75,7 +75,6 @@ def get_asset(x):
 class Player(pygame.sprite.Sprite):
     aabb: AABB
     vx: float
-    vy: float
     facing: Facing
     state: State
     prevState: State
@@ -98,7 +97,7 @@ class Player(pygame.sprite.Sprite):
         self.boxstate = BoxState.REST
         self.health = 3
 
-        self.vx = 0; self.vy = 0
+        self.vx = 0
         self.facing = facing
 
         # dictionary containing keypresses and timers to track them
@@ -129,15 +128,6 @@ class Player(pygame.sprite.Sprite):
     def x(self, x):
         self.aabb.x = x
         self.rect.x = round(x)
-
-    @property
-    def y(self):
-        return self.aabb.y
-
-    @y.setter
-    def y(self, y):
-        self.aabb.y = y
-        self.rect.y = round(y)
 
     @property
     def free(self):
@@ -174,7 +164,6 @@ class Player(pygame.sprite.Sprite):
         self._update_state(parry)
         self._update_velocity(l_dash, r_dash)
         self.x += self.vx
-        self.y += self.vy
 
         self.animator.update(dt)
         self.image = self.animator.image(flip=self.facing == Facing.LEFT)
