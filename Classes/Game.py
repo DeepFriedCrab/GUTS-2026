@@ -54,6 +54,8 @@ class Game:
             # ----------------- player stuff ------------------- #
             # check collisions
             self.handle_collision()
+            self.check_wall_collision(self.p1)
+            self.check_wall_collision(self.p2)
 
             # tick player logic
             self.p1.tick(dt)
@@ -130,3 +132,12 @@ class Game:
                     # bounce apart when two attacks meet
                     self.p1.bounce()
                     self.p2.bounce()
+
+    def check_wall_collision(self, player):
+        if player.x < -25:
+            player.vx = 0
+            player.x = 0
+
+        elif player.x + player.aabb.w > self.window_dimensions[0] + 25:
+            player.vx = 0
+            player.x = self.window_dimensions[0] - player.aabb.w
