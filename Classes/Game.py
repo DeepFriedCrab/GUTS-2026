@@ -52,10 +52,9 @@ class Game:
                 elif event.type == pygame.KEYUP:
                     self.parse_keyup(event.key)
             
-            
-            # move players
-            self.p1.move()
-            self.p2.move()
+            # tick player logic
+            self.p1.tick()
+            self.p2.tick()
                 
             self.screen.fill(self.background_colour)
             pygame.draw.rect(self.screen, (0,0,0), pygame.Rect(0,self.ground_y, self.window_dimensions[0] , self.window_dimensions[1] - self.ground_y ))  
@@ -70,10 +69,11 @@ class Game:
         match key:
             case pygame.K_a:
                 print("a has been pressed")
-                self.p1.ldown = True
+                self.p1.press_dict["l"]["down"] = True
             case pygame.K_d:
                 print("d has been pressed")
-                self.p1.rdown = True
+                self.p1.press_dict["r"]["down"] = True
+                
             case pygame.K_j:
                 print("j has been pressed")
             case pygame.K_l:
@@ -85,10 +85,10 @@ class Game:
             match key:
                 case pygame.K_a:
                     print("a has been lifted")
-                    self.p1.ldown = False
+                    self.p1.press_dict["l"]["down"] = False
                 case pygame.K_d:
                     print("d has been lifted")
-                    self.p1.rdown = False
+                    self.p1.press_dict["r"]["down"] = False
                 case pygame.K_j:
                     print("j has been lifted")
                 case pygame.K_l:
