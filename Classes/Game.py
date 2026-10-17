@@ -32,6 +32,7 @@ def parse_keydown(key):
 
 class Game:
     def __init__(self):
+        pygame.init()
         self.background_colour = (255,255,255)
 
         (width, height) = (300, 200)
