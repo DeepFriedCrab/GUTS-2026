@@ -142,6 +142,7 @@ class Game:
                 case (BoxState.BLOCK, BoxState.DAMAGE):
                     # parry doesnt carry tired state
                     self.p1.parryTimer = 0
+                    self.p1
                 case (BoxState.DAMAGE, BoxState.BLOCK):
                     # parry doesnt carry tired state
                     self.p2.parryTimer = 0
