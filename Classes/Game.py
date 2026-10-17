@@ -1,6 +1,6 @@
 import pygame
 import os
-from Classes.Player import Player
+from classes.player import Player
 
 
 testface = pygame.image.load(os.path.join('testface.png'))

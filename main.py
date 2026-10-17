@@ -1,5 +1,5 @@
-from Classes.Game import Game
-from Classes.Player import Player
+from classes.Game import Game
+from classes.player import Player
 
 
 
