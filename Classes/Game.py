@@ -75,14 +75,11 @@ class Game:
     def parse_keydown(self, key):
         match key:
             case pygame.K_a:
-                print("a has been pressed")
                 self.p1.press_dict["l"]["down"] = True
             case pygame.K_d:
-                print("d has been pressed")
                 self.p1.press_dict["r"]["down"] = True
                 
             case pygame.K_j:
-                print("j has been pressed")
                 self.p1.lunge()
             case pygame.K_k:
                 print("k has been pressed")
@@ -99,10 +96,8 @@ class Game:
     def parse_keyup(self, key):
             match key:
                 case pygame.K_a:
-                    print("a has been lifted")
                     self.p1.press_dict["l"]["down"] = False
                 case pygame.K_d:
-                    print("d has been lifted")
                     self.p1.press_dict["r"]["down"] = False
                 case pygame.K_j:
                     print("j has been lifted")

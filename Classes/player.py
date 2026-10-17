@@ -13,28 +13,37 @@ class State(Enum):
     IDLE = "Idle"
     FORWARD_WALK = "ForwardWalk"
     BACKWARD_WALK = "BackwardWalk"
-    LUNGE_FORWARD = "LungeForward"
-    HOP_BACKWARD = "HopBackward"
+    DASH_RIGHT = "DashRight"
+    DASH_LEFT = "DashLeft"
     PARRY = "Parry"
     HURT = "Hurt"
+    TIRED = "Tired"
 
 FREE_STATES = {State.IDLE, State.FORWARD_WALK, State.BACKWARD_WALK}
 
 DEFAULT_LENGTHS = {
-    State.LUNGE_FORWARD: 300,
-    State.HOP_BACKWARD: 400,
+    State.DASH_RIGHT: 300,
+    State.DASH_LEFT: 300,
     State.PARRY: 250,
     State.HURT: 400,
+    State.TIRED: 500,
 }
 
 WALK_SPEED = 4
 BACKWARD_SPEED = 3
+
 DASH_SPEED = 40
 LUNGE_SPEED = 12
+
 HOP_SPEED = 8
 HOP_FRICTION = 0.9
+
 HURT_SPEED = 9
 HURT_FRICTION = 0.85
+
+TIRED_SPEED = 0
+TIRED_FRICTION = 0
+
 
 class Player(pygame.sprite.Sprite):
     aabb: AABB
@@ -116,18 +125,18 @@ class Player(pygame.sprite.Sprite):
         self.animator.play(state.value, loop=state in FREE_STATES, restart=True)
 
         match state:
-            case State.HOP_BACKWARD:
+            case State.DASH_LEFT:
                 self.vx = -self.facing.value * HOP_SPEED
             case State.PARRY:
                 self.vx = 0
 
     def lunge(self):
         if self.free:
-            self.set_state(State.LUNGE_FORWARD)
+            self.set_state(State.DASH_RIGHT)
 
     def hop_back(self):
         if self.free:
-            self.set_state(State.HOP_BACKWARD)
+            self.set_state(State.DASH_LEFT)
 
     def parry(self):
         if self.free:
@@ -192,30 +201,35 @@ class Player(pygame.sprite.Sprite):
                 self.set_state(new_state)
 
         elif self.state_time >= self.state_length:
-            self.set_state(State.IDLE)
+            if self.state == State.DASH_RIGHT or self.state == State.DASH_LEFT:
+                self.set_state(State.TIRED)
+            else:
+                self.set_state(State.IDLE)
 
     def _update_velocity(self, l_dash=False, r_dash=False):
         match self.state:
             case State.IDLE | State.FORWARD_WALK | State.BACKWARD_WALK:
                 self.vx *= 0.5
                 if l_dash:
-                    print("DASH LEFTTTT")
+                    self.set_state(State.DASH_LEFT)
                     self.vx -= DASH_SPEED
                 elif r_dash:
-                    print("DASH RIGHTTTT")
+                    self.set_state(State.DASH_RIGHT)
                     self.vx += DASH_SPEED
                 else:
                     speed = BACKWARD_SPEED if self.state == State.BACKWARD_WALK else WALK_SPEED
                     self.vx += self._input_direction() * speed * 0.5
-            case State.LUNGE_FORWARD:
+            case State.DASH_RIGHT:
                 progress = min(self.state_time / self.state_length, 1) if self.state_length else 1
                 self.vx = self.facing.value * LUNGE_SPEED * (1 - progress)
-            case State.HOP_BACKWARD:
+            case State.DASH_LEFT:
                 self.vx *= HOP_FRICTION
             case State.PARRY:
                 self.vx = 0
             case State.HURT:
                 self.vx *= HURT_FRICTION
+            case State.TIRED:
+                self.vx *= TIRED_FRICTION
 
         if abs(self.vx) < 0.01:
             self.vx = 0
