@@ -34,6 +34,9 @@ class Game:
         self.p1 = Player( 50, 255, Facing.LEFT)
         self.p2 = Player( 450, 255, Facing.RIGHT)
 
+        # Who's facing right
+        self.facing_right = "p2"
+
 
         self.all_sprites_list.add(self.p1)
         self.all_sprites_list.add(self.p2)
@@ -62,6 +65,15 @@ class Game:
             self.p1.tick(dt)
             self.p2.tick(dt)
 
+            # Flips players
+            if self.p1.x < self.p2.x:
+                self.p1.facing = Facing.LEFT
+                self.p2.facing = Facing.RIGHT
+
+            if self.p1.x >= self.p2.x:
+                self.p2.facing = Facing.LEFT
+                self.p1.facing = Facing.RIGHT
+            
             self.screen.fill(self.background_colour)
             pygame.draw.rect(self.screen, (0,0,0), pygame.Rect(0,self.ground_y, self.window_dimensions[0] , self.window_dimensions[1] - self.ground_y + 1 ))
 
