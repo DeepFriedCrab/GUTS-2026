@@ -6,6 +6,8 @@ class Player(pygame.sprite.Sprite):
         self.image = sprite
         self.rect = self.image.get_rect(center=(30,30))
 
+    ldown = False
+    rdown = False
     x = 0
     y = 0
     vx = 0
@@ -16,4 +18,12 @@ class Player(pygame.sprite.Sprite):
     action = "still"
 
     def move(self):
-        self.rect.x += 1
+        match (self.ldown, self.rdown):
+            case (False, False):
+                pass
+            case (False, True):
+                self.rect.x += 3
+            case (True, False):
+                self.rect.x -= 3
+            case (True, True):
+                pass
