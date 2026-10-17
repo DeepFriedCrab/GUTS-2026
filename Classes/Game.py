@@ -67,6 +67,13 @@ class Game:
                 self.p2.facing = Facing.LEFT
                 self.p1.facing = Facing.RIGHT
 
+            # --------------- health stuff --------------------- #
+            self.healthbarL.setHealth(self.p1.health)
+            self.healthbarR.setHealth(self.p2.health)
+
+            print(self.p1.health)
+            print(self.p2.health)
+
             # ------------ drawing stuff ------------- #
             self.screen.fill(self.background_colour)
             pygame.draw.rect(self.screen, (0,0,0), pygame.Rect(0,self.ground_y, self.window_dimensions[0] , self.window_dimensions[1] - self.ground_y + 1 ))
@@ -105,14 +112,14 @@ class Game:
             match (self.p1.boxstate, self.p2.boxstate):
                 case (BoxState.REST, BoxState.DAMAGE):
                     # damage p1
-                    print("DAMAGE P1")
                     self.p1.set_state(State.HURT)
-                    pass
+                    self.p1.damage()
+                    self.p1.bounce()
                 case (BoxState.DAMAGE, BoxState.REST):
                     # damage p2
-                    print("DAMAGE P2")
                     self.p2.set_state(State.HURT)
-                    pass
+                    self.p2.damage()
+                    self.p2.bounce()
                 case (BoxState.BLOCK, BoxState.DAMAGE):
                     # parry doesnt carry tired state
                     print("P1 BLOCKED")
@@ -122,11 +129,9 @@ class Game:
                     print("P2 BLOCKED")
                     pass
                 case (BoxState.DAMAGE, BoxState.DAMAGE):
-                    # bounce apart
-                    print("BOUNCE APART")
+                    # bounce apart when two attacks meet
                     self.p1.bounce()
                     self.p2.bounce()
                     pass
                 case _:
-                    print("calm")
                     pass

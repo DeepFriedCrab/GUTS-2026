@@ -19,5 +19,5 @@ class HealthBar(pygame.sprite.Sprite):
 
     def setHealth(self,health):
         self.health = health
-        self.image = pygame.image.load(os.path.join('Assests/healthBar/'+self.side+str(self.health)+'.png'))
+        self.image = pygame.image.load(os.path.join('Assets/healthBar/'+self.side+str(self.health)+'.png'))
 

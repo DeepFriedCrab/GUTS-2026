@@ -78,6 +78,7 @@ class Player(pygame.sprite.Sprite):
     vy: float
     facing: Facing
     state: State
+    prevState: State
     boxstate: BoxState
     health: int
 
@@ -87,6 +88,7 @@ class Player(pygame.sprite.Sprite):
 
     def __init__(self , x, y, facing=Facing.RIGHT):
         pygame.sprite.Sprite.__init__(self)
+        self.state = State.IDLE
         self.set_state(State.IDLE)
         self.frames = get_asset(self.state)
         self.animator = Animator(Animation(self.frames, 300,))
@@ -146,6 +148,7 @@ class Player(pygame.sprite.Sprite):
         return self.state == State.PARRY
 
     def set_state(self, state: State):
+        self.prevState = self.state
         self.state = state
         self.state_time = 0
         self.frames = get_asset(self.state)
@@ -261,8 +264,11 @@ class Player(pygame.sprite.Sprite):
             self.vx = 0
 
     def bounce(self):
-        self.set_state(State.DASH_BACK)
         if self.facing == Facing.LEFT:
             self.vx -= DASH_SPEED * 2
         elif self.facing == Facing.RIGHT:
             self.vx += DASH_SPEED * 2
+
+    def damage(self):
+        if self.prevState != State.HURT:
+            self.health -= 1
