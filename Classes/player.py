@@ -274,10 +274,10 @@ class Player(pygame.sprite.Sprite):
                 self.set_state(new_state)
 
         elif self.state_time >= self.state_length:
-            if self.state == State.DASH_FORWARD or self.state == State.DASH_BACK:
+            if self.state == State.DASH_FORWARD :
                 self.set_state(State.TIRED)
             elif self.state == State.PARRY and self.parryTimer > 50:
-                print("block")
+
                 self.set_state(State.TIRED)
             else:
                 self.set_state(State.IDLE)
