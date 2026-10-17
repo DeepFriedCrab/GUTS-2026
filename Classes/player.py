@@ -3,7 +3,7 @@ from enum import Enum
 import pygame
 import os
 from Classes.aabb import AABB
-from Classes.spritesheet import Animator, Animation
+from Classes.animator import Animator, Animation
 
 class Facing(Enum):
     RIGHT = 1
@@ -23,6 +23,7 @@ class State(Enum):
     PARRY = "Parry"
     HURT = "Hurt"
     TIRED = "Tired"
+    DEAD = "Dead"
 
 FREE_STATES = {State.IDLE, State.FORWARD_WALK, State.BACKWARD_WALK}
 
@@ -32,6 +33,7 @@ DEFAULT_LENGTHS = {
     State.PARRY: 250,
     State.HURT: 400,
     State.TIRED: 400,
+    State.DEAD: 400,
 }
 
 WALK_SPEED = 6
@@ -71,7 +73,8 @@ sprite_dict = {
     "dashBack": load_frames("Assets/stick/dashBack") ,
     "block": load_frames("Assets/stick/block") ,
     "hurt": load_frames("Assets/stick/hurt") ,
-    "tired": load_frames("Assets/stick/tired") 
+    "tired": load_frames("Assets/stick/tired"),
+    "dead":load_frames("Assets/stick/defete")
 }
 
 # Recolours the frames
@@ -100,7 +103,8 @@ def get_asset(x):
            frames = sprite_dict["hurt"]
         case State.TIRED:
            frames = sprite_dict["tired"]
-
+        case State.DEAD:
+            frames = sprite_dict["dead"]
     return frames
 
 
@@ -123,7 +127,6 @@ class Player(pygame.sprite.Sprite):
         self.state = State.IDLE
         self.set_state(State.IDLE)
         self.frames = get_asset(self.state)
-        self.animator = Animator(Animation(self.frames, 300,))
         self.image = self.frames[0]
         self.rect = self.image.get_rect(topleft=(x, y))
         self.aabb = AABB(x, y, self.rect.w, self.rect.h)
@@ -172,11 +175,13 @@ class Player(pygame.sprite.Sprite):
         return self.state == State.PARRY
 
     def set_state(self, state: State):
+        if self.state == State.DEAD:
+            return
         self.prevState = self.state
         self.state = state
         self.state_time = 0
         self.frames = get_asset(self.state)
-        self.animator = Animator(Animation(self.frames, 300,))
+        self.animator = Animator(Animation(self.frames, 300,"once" if self.state == State.DEAD else "repeat"))
         self.state_length = DEFAULT_LENGTHS.get(state,0)
 
         # change bounding box state based on new state
@@ -234,7 +239,9 @@ class Player(pygame.sprite.Sprite):
         return int(self.press_dict["r"]["down"]) - int(self.press_dict["l"]["down"])
 
     def _update_state(self, parry=False):
-        if self.free:
+        if self.state == State.DEAD:
+            return
+        elif self.free:
             
             match (int(self.press_dict["l" if self.facing == Facing.RIGHT else "r"]["down"]), int(self.press_dict["r" if self.facing == Facing.RIGHT else "l"]["down"])):
                 case (0, 0):
@@ -283,6 +290,8 @@ class Player(pygame.sprite.Sprite):
             case State.HURT:
                 self.vx *= HURT_FRICTION
             case State.TIRED:
+                self.vx *= 0
+            case State.DEAD:
                 self.vx *= 0
 
         if abs(self.vx) < 0.01:
