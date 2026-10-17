@@ -71,9 +71,6 @@ class Game:
             self.healthbarL.setHealth(self.p1.health)
             self.healthbarR.setHealth(self.p2.health)
 
-            print(self.p1.health)
-            print(self.p2.health)
-
             # ------------ drawing stuff ------------- #
             self.screen.fill(self.background_colour)
             pygame.draw.rect(self.screen, (0,0,0), pygame.Rect(0,self.ground_y, self.window_dimensions[0] , self.window_dimensions[1] - self.ground_y + 1 ))
