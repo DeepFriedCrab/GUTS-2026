@@ -7,7 +7,8 @@ class HealthBar(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
 
         self.health = 3
-        self.image = pygame.image.load(os.path.join('Assets/healthBar/'+side+str(self.health)+'.png'))
+        self.side= side
+        self.image = pygame.image.load(os.path.join('Assets/healthBar/'+self.side+str(self.health)+'.png'))
         
         if side == "L":
             self.rect = self.image.get_rect(center=(210,ground_y+70))
@@ -18,5 +19,5 @@ class HealthBar(pygame.sprite.Sprite):
 
     def setHealth(self,health):
         self.health = health
-        self.image = pygame.image.load(os.path.join('Assests/healthBar/'+side+str(health)+'.png'))
+        self.image = pygame.image.load(os.path.join('Assests/healthBar/'+self.side+str(self.health)+'.png'))
 
