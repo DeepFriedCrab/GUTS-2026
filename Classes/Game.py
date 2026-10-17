@@ -1,5 +1,5 @@
 import pygame
-from Classes.player import Player, Facing, BoxState,State, fill
+from Classes.player import Player, Facing, BoxState,State
 from Classes.healthBar import HealthBar
 
 
@@ -142,10 +142,11 @@ class Game:
                 case (BoxState.BLOCK, BoxState.DAMAGE):
                     # parry doesnt carry tired state
                     self.p1.parryTimer = 0
-                    self.p1
+                    self.p1.set_state(State.SUCCESSFUL_PARRY)
                 case (BoxState.DAMAGE, BoxState.BLOCK):
                     # parry doesnt carry tired state
                     self.p2.parryTimer = 0
+                    self.p2.set_state(State.SUCCESSFUL_PARRY)
                 case (BoxState.DAMAGE, BoxState.DAMAGE):
                     # bounce apart when two attacks meet
                     self.p1.bounce()

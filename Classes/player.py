@@ -21,6 +21,7 @@ class State(Enum):
     DASH_FORWARD = "DashForward"
     DASH_BACK = "DashBack"
     PARRY = "Parry"
+    SUCCESSFUL_PARRY = "SuccessfulParry"
     HURT = "Hurt"
     TIRED = "Tired"
     DEAD = "Dead"
@@ -76,6 +77,7 @@ sprite_dict = {
     "dashForward": load_frames("Assets/stick/dashFoward") ,
     "dashBack": load_frames("Assets/stick/dashBack") ,
     "block": load_frames("Assets/stick/block") ,
+    "sucblock": load_frames("Assets/stick/succesffulblock" ) ,
     "hurt": load_frames("Assets/stick/hurt") ,
     "tired": load_frames("Assets/stick/tired"),
     "dead":load_frames("Assets/stick/defete")
@@ -88,6 +90,8 @@ for frames in list(sprite_dict.values()):
 
 for fram in sprite_dict["hurt"]:
     fill(fram, pygame.Color(255,0,0))
+for fram in sprite_dict["sucblock"]:
+    fill(fram, pygame.Color(103,235,252))
 
 
 def get_asset(x):
@@ -111,6 +115,8 @@ def get_asset(x):
            frames = sprite_dict["tired"]
         case State.DEAD:
             frames = sprite_dict["dead"]
+        case State.SUCCESSFUL_PARRY:
+            frames = sprite_dict["sucblock"]
     return frames
 
 
@@ -188,7 +194,9 @@ class Player(pygame.sprite.Sprite):
         self.state_time = 0
         self.frames = get_asset(self.state)
         self.animator = Animator(Animation(self.frames, 300,"once" if self.state == State.DEAD else "repeat"))
-        self.state_length = DEFAULT_LENGTHS.get(state,0)
+        print(state)
+        if state != State.SUCCESSFUL_PARRY:
+            self.state_length = DEFAULT_LENGTHS.get(state,0)
 
         # change bounding box state based on new state
         match state:
