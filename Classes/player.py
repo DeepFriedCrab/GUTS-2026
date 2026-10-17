@@ -36,7 +36,7 @@ class Player(pygame.sprite.Sprite):
         },
     }
     # values to change dash input timing
-    held_cap = 25
+    held_cap = 15
     since_cap = 30
 
     def __init__(self, sprite: pygame.Surface, x, y, scale=1):
