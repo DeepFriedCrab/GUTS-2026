@@ -58,15 +58,15 @@ def get_asset(x):
         case State.BACKWARD_WALK:
            frames = load_frames("Assets/stick/walkback") 
         case State.DASH_FORWARD:
-           frames = load_frames("Assets/stick/walkfoward") 
+           frames = load_frames("Assets/stick/dashFoward") 
         case State.DASH_BACK:
-           frames = load_frames("Assets/stick/walkfoward") 
+           frames = load_frames("Assets/stick/dashBack") 
         case State.PARRY:
            frames = load_frames("Assets/stick/block") 
         case State.HURT:
-           frames = load_frames("Assets/stick/walkfoward") 
+           frames = load_frames("Assets/stick/idle") 
         case State.TIRED:
-           frames = load_frames("Assets/stick/walkfoward") 
+           frames = load_frames("Assets/stick/idle") 
     return frames
 
 
@@ -142,6 +142,8 @@ class Player(pygame.sprite.Sprite):
     def set_state(self, state: State):
         self.state = state
         self.state_time = 0
+        self.frames = get_asset(self.state)
+        self.animator = Animator(Animation(self.frames, 300,))
         self.state_length = DEFAULT_LENGTHS.get(state,0)
 
     def tick(self, dt):
