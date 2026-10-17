@@ -119,6 +119,9 @@ class Game:
                 self.p2.press_dict["r"]["down"] = False
 
     def handle_collision(self):
+        if self.p1.state == State.DEAD or self.p2.state == State.DEAD:
+            return 
+
         if self.p1.aabb.is_overlapping(self.p2.aabb):
             match (self.p1.boxstate, self.p2.boxstate):
                 case (BoxState.REST, BoxState.DAMAGE):
