@@ -1,8 +1,7 @@
 import pygame
-from Classes.player import Player, Facing, BoxState,State, fill
+from Classes.player import Player, Facing, BoxState,State, fill, load_frames
 from Classes.healthBar import HealthBar
-
-
+from Classes.Logo import Logo
 
 class Game:
     window_dimensions =  (1920, 1080)
@@ -13,7 +12,7 @@ class Game:
 
     def __init__(self):
         pygame.init()
-        self.background_colour = (0,0,0) #(171,170,170)
+        self.background_colour = (25,24,26) #(171,170,170)
         self.screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
 
         pygame.display.set_caption('2Fight')
@@ -27,11 +26,29 @@ class Game:
         self.facing_right = "p2"
 
 
-        self.all_sprites_list.add(self.p1)
-        self.all_sprites_list.add(self.p2)
-        self.all_sprites_list.add(self.healthbarL)
-        self.all_sprites_list.add(self.healthbarR)
-        
+    def Start(self):
+        clock = pygame.time.Clock()
+        logo = Logo()
+        self.all_sprites_list.add(logo)
+
+        while True:
+            dt = clock.tick(60)
+
+            self.screen.fill(self.background_colour)
+            self.all_sprites_list.draw(self.screen)
+            logo.update(dt)
+
+            pygame.display.flip()
+            
+            for event in pygame.event.get():
+                if event.type == pygame.KEYDOWN:
+                    self.all_sprites_list.remove(logo)
+                    self.all_sprites_list.add(self.healthbarL)
+                    self.all_sprites_list.add(self.healthbarR)
+                    self.all_sprites_list.add(self.p1)
+                    self.all_sprites_list.add(self.p2)
+                    self.run()
+    
     def run(self):
         clock = pygame.time.Clock()
         running = True 
@@ -87,7 +104,7 @@ class Game:
 
             # ------------ drawing stuff ------------- #
             self.screen.fill(self.background_colour)
-            pygame.draw.rect(self.screen, (255,255,255), pygame.Rect(0,self.ground_y, self.window_dimensions[0] , self.window_dimensions[1] - self.ground_y + 1 ))
+            pygame.draw.rect(self.screen, (40,40,40), pygame.Rect(0,self.ground_y, self.window_dimensions[0] , self.window_dimensions[1] - self.ground_y + 1 ))
 
             self.all_sprites_list.draw(self.screen)
             pygame.display.flip()
