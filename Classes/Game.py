@@ -1,6 +1,6 @@
 import pygame
 import os
-from Classes.player import Player
+from Classes.Player import Player
 
 
 testface = pygame.image.load(os.path.join('testface.png'))
@@ -22,6 +22,7 @@ def parse_keydown(key):
             print("a has been pressed")
         case pygame.K_d:
             print("d has been pressed")
+            Player
         case pygame.K_j:
             print("j has been pressed")
         case pygame.K_l:
@@ -40,7 +41,7 @@ class Game:
         pygame.display.set_caption('2Fight')
 
         self.all_sprites_list = pygame.sprite.Group()
-        object_ = Testface()
+        object_ = Player(testface)
         object_.rect.x = 50
         object_.rect.y = 50  
 
@@ -48,23 +49,22 @@ class Game:
 
     def run(self):
         clock = pygame.time.Clock()
-        running = True
-        p1 = Player()
-        p2 = Player()
+        running = True 
+        
         while running:
+          for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+    
+            elif event.type == pygame.KEYDOWN:
+                parse_keydown(event.key)
+                
           self.screen.fill(self.background_colour)
           self.all_sprites_list.update() 
           box = self.all_sprites_list.sprites()[0].move()
           self.all_sprites_list.draw(self.screen) 
           clock.tick(60) 
           pygame.display.flip()
-
-          for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                running = False
-    
-            if event.type == pygame.KEYDOWN:
-                parse_keydown(event.key)
 
 
 
