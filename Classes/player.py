@@ -1,19 +1,48 @@
+from enum import Enum
+
 import pygame
 
+from classes.aabb import AABB
+
+class Facing(Enum):
+    RIGHT = 0
+    LEFT = 1
+
+class Action(Enum):
+    STILL = 0
+
 class Player(pygame.sprite.Sprite):
-    def __init__(self, sprite):
+    aabb: AABB
+    vx: float
+    vy: float
+    facing: Facing
+    action: Action
+
+    def __init__(self, sprite, x, y, w, h):
         pygame.sprite.Sprite.__init__(self)
         self.image = sprite
         self.rect = self.image.get_rect(center=(30,30))
+        self.aabb = AABB(x, y, w, h)
+        self.vx = 0; self.vy = 0
+        self.facing = Facing.RIGHT; self.action = Action.STILL
 
-    x = 0
-    y = 0
-    vx = 0
-    vy = 0
+    @property
+    def x(self):
+        return self.aabb.x
 
-    facing = "right"
+    @x.setter
+    def x(self, x):
+        self.rect.x = round(x)
+        self.aabb.x = round(x)
 
-    action = "still"
+    @property
+    def y(self):
+        return self.aabb.y
+
+    @y.setter
+    def y(self, y):
+        self.rect.y = round(y)
+        self.aabb.y = round(y)
 
     def move(self):
-        self.rect.x += 1
+        self.x += 1

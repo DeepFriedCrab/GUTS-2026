@@ -1,13 +1,13 @@
 import pygame
 
-class Box:
+class AABB:
     x: float
     y: float
     w: float
     h: float
 
     def __init__(self, x, y, w, h):
-        self.x = x; self.y = y; self.w = w; self.h = h
+        self.x, self.y, self.w, self.h = x, y, w, h
 
     def update_pos(self, x, y):
         self.x = x

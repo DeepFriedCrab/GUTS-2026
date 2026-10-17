@@ -41,9 +41,7 @@ class Game:
         pygame.display.set_caption('2Fight')
 
         self.all_sprites_list = pygame.sprite.Group()
-        object_ = Player(testface)
-        object_.rect.x = 50
-        object_.rect.y = 50  
+        object_ = Player(testface, 50, 50, 10, 10)
 
         self.all_sprites_list.add(object_)
 
