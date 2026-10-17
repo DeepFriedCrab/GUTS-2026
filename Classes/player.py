@@ -86,6 +86,8 @@ for frames in list(sprite_dict.values()):
     for frame in frames:
         fill(frame, pygame.Color(255,255,255))
 
+for fram in sprite_dict["hurt"]:
+    fill(fram, pygame.Color(255,0,0))
 
 
 def get_asset(x):
