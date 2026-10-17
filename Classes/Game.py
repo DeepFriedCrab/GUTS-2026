@@ -5,7 +5,7 @@ from Classes.healthBar import HealthBar
 
 
 class Game:
-    window_dimensions =  (1200, 800)
+    window_dimensions =  (1920, 1080)
     ground_y = 4*window_dimensions[1]/5 
 
     healthbarL = HealthBar("L",window_dimensions[0])
@@ -14,14 +14,14 @@ class Game:
     def __init__(self):
         pygame.init()
         self.background_colour = (0,0,0) #(171,170,170)
-        self.screen = pygame.display.set_mode(self.window_dimensions)
+        self.screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
 
         pygame.display.set_caption('2Fight')
 
         self.all_sprites_list = pygame.sprite.Group()
        
-        self.p1 = Player( 50, 255, Facing.LEFT)
-        self.p2 = Player( 450, 255, Facing.RIGHT)
+        self.p1 = Player( 50, 490, Facing.LEFT)
+        self.p2 = Player( 1600, 490, Facing.RIGHT)
 
         # Who's facing right
         self.facing_right = "p2"
