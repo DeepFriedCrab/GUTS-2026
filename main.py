@@ -10,6 +10,19 @@ screen.fill(background_colour)
 
 pygame.display.flip()
 
+def parse_keydown(key):
+    match key:
+        case pygame.K_a:
+            print("a has been pressed")
+        case pygame.K_d:
+            print("d has been pressed")
+        case pygame.K_j:
+            print("j has been pressed")
+        case pygame.K_l:
+            print("l has been pressed")
+        case _:
+            print("Another key has been pressed")
+
 p1 = Player()
 p2 = Player()
 
@@ -18,3 +31,6 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+
+        if event.type == pygame.KEYDOWN:
+            parse_keydown(event.key)
