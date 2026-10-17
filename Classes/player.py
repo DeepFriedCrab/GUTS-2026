@@ -210,8 +210,8 @@ class Player(pygame.sprite.Sprite):
 
     def _update_state(self, parry=False):
         if self.free:
-            direction = self._input_direction()
-            match (int(self.press_dict["r"]["down"]), int(self.press_dict["l"]["down"])):
+            
+            match (int(self.press_dict["l" if self.facing == Facing.RIGHT else "r"]["down"]), int(self.press_dict["r" if self.facing == Facing.RIGHT else "l"]["down"])):
                 case (0, 0):
                     new_state = State.IDLE
                 case (1, 0):
@@ -240,10 +240,10 @@ class Player(pygame.sprite.Sprite):
             case State.IDLE | State.FORWARD_WALK | State.BACKWARD_WALK:
                 self.vx *= 0.5
                 if l_dash:
-                    self.set_state(State.DASH_BACK)
+                    self.set_state(State.DASH_BACK if self.facing == Facing.LEFT else State.DASH_FORWARD)
                     self.vx -= DASH_SPEED
                 elif r_dash:
-                    self.set_state(State.DASH_FORWARD)
+                    self.set_state(State.DASH_BACK if self.facing == Facing.RIGHT else State.DASH_FORWARD)
                     self.vx += DASH_SPEED
                 else:
                     speed = BACKWARD_SPEED if self.state == State.BACKWARD_WALK else WALK_SPEED
