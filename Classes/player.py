@@ -50,25 +50,57 @@ def load_frames(folder_dir):
         frames.append(pygame.image.load(folder_dir+"/"+images))
     return frames
 
+
+# recolouring code from
+# https://stackoverflow.com/questions/42821442/how-do-i-change-the-colour-of-an-image-in-pygame-without-changing-its-transparen
+def fill(surface, color):
+    """Fill all pixels of the surface with color, preserve transparency."""
+    w, h = surface.get_size()
+    r, g, b, _ = color
+    for x in range(w):
+        for y in range(h):
+            a = surface.get_at((x, y))[3]
+            surface.set_at((x, y), pygame.Color(r, g, b, a))
+
+# Loads sprite in silly style
+sprite_dict = {
+    "idle": load_frames("Assets/stick/idle"),
+    "walkfoward": load_frames("Assets/stick/walkfoward") ,
+    "walkback": load_frames("Assets/stick/walkback") ,
+    "dashForward": load_frames("Assets/stick/dashFoward") ,
+    "dashBack": load_frames("Assets/stick/dashBack") ,
+    "block": load_frames("Assets/stick/block") ,
+    "hurt": load_frames("Assets/stick/hurt") ,
+    "tired": load_frames("Assets/stick/tired") 
+}
+
+# Recolours the frames
+for frames in list(sprite_dict.values()):
+    for frame in frames:
+        fill(frame, pygame.Color(255,255,255))
+
+
+
 def get_asset(x):
     frames = []
     match x:
         case State.IDLE:
-           frames = load_frames("Assets/stick/idle") 
+           frames = sprite_dict["idle"]
         case State.FORWARD_WALK:
-           frames = load_frames("Assets/stick/walkfoward") 
+           frames = sprite_dict["walkfoward"]
         case State.BACKWARD_WALK:
-           frames = load_frames("Assets/stick/walkback") 
+           frames = sprite_dict["walkback"]
         case State.DASH_FORWARD:
-           frames = load_frames("Assets/stick/dashFoward") 
+           frames = sprite_dict["dashForward"]
         case State.DASH_BACK:
-           frames = load_frames("Assets/stick/dashBack") 
+           frames = sprite_dict["dashBack"]
         case State.PARRY:
-           frames = load_frames("Assets/stick/block") 
+           frames = sprite_dict["block"]
         case State.HURT:
-           frames = load_frames("Assets/stick/hurt") 
+           frames = sprite_dict["hurt"]
         case State.TIRED:
-           frames = load_frames("Assets/stick/tired") 
+           frames = sprite_dict["tired"]
+
     return frames
 
 

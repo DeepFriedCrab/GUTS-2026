@@ -1,6 +1,7 @@
 import pygame
-from Classes.player import Player, Facing, BoxState,State
+from Classes.player import Player, Facing, BoxState,State, fill
 from Classes.healthBar import HealthBar
+
 
 
 class Game:
@@ -12,7 +13,7 @@ class Game:
 
     def __init__(self):
         pygame.init()
-        self.background_colour = (171,170,170)
+        self.background_colour = (0,0,0) #(171,170,170)
         self.screen = pygame.display.set_mode(self.window_dimensions)
 
         pygame.display.set_caption('2Fight')
@@ -73,7 +74,7 @@ class Game:
 
             # ------------ drawing stuff ------------- #
             self.screen.fill(self.background_colour)
-            pygame.draw.rect(self.screen, (0,0,0), pygame.Rect(0,self.ground_y, self.window_dimensions[0] , self.window_dimensions[1] - self.ground_y + 1 ))
+            pygame.draw.rect(self.screen, (255,255,255), pygame.Rect(0,self.ground_y, self.window_dimensions[0] , self.window_dimensions[1] - self.ground_y + 1 ))
 
             self.all_sprites_list.draw(self.screen)
             pygame.display.flip()
