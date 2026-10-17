@@ -11,9 +11,9 @@ class HealthBar(pygame.sprite.Sprite):
         self.image = pygame.image.load(os.path.join('Assets/healthBar/'+self.side+str(self.health)+'.png'))
         
         if side == "L":
-            self.rect = self.image.get_rect(center=(210,ground_y+70))
+            self.rect = self.image.get_rect(center=(210,70))
         elif side == "R":
-             self.rect = self.image.get_rect(center=(width-210,ground_y+70))
+             self.rect = self.image.get_rect(center=(width-210,70))
         else:
             raise RuntimeError("Health Bar must be left or right")
 

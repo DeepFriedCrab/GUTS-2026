@@ -1,6 +1,7 @@
 import pygame
 import os
-from Classes.player import Player
+from Classes.player import Player, Facing
+from Classes.spritesheet import SpriteSheet
 from Classes.healthBar import HealthBar
 
 testface = pygame.image.load(os.path.join('assets/stickman_test.png'))
@@ -30,8 +31,10 @@ class Game:
         pygame.display.set_caption('2Fight')
 
         self.all_sprites_list = pygame.sprite.Group()
-        self.p1 = Player(testface, 50, 50, scale=2)
-        self.p2 = Player(testface, 0, 0, scale=2)
+        self.sheet = SpriteSheet(os.path.join('assets', 'stickman_test.png'), scale=2)
+        floor_y = self.ground_y - self.sheet.size[1]
+        self.p1 = Player(self.sheet, 50, floor_y)
+        self.p2 = Player(self.sheet, 450, floor_y, Facing.LEFT)
 
         self.all_sprites_list.add(self.p1)
         self.all_sprites_list.add(self.healthbarL)
@@ -43,6 +46,8 @@ class Game:
         running = True 
         
         while running:
+            dt = clock.tick(60)
+
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     running = False
@@ -55,16 +60,14 @@ class Game:
                     self.parse_keyup(event.key)
             
             # tick player logic
-            self.p1.tick()
-            self.p2.tick()
-                
-            self.screen.fill(self.background_colour)
-            pygame.draw.rect(self.screen, (0,150,0), pygame.Rect(0,self.ground_y, self.window_dimensions[0] , self.window_dimensions[1] - self.ground_y + 1 ))  
+            self.p1.tick(dt)
+            self.p2.tick(dt)
 
-            self.all_sprites_list.update() 
+            self.screen.fill(self.background_colour)
+            pygame.draw.rect(self.screen, (0,150,0), pygame.Rect(0,self.ground_y, self.window_dimensions[0] , self.window_dimensions[1] - self.ground_y + 1 ))
+
             #box = self.all_sprites_list.sprites()[0].move()
-            self.all_sprites_list.draw(self.screen) 
-            clock.tick(60)
+            self.all_sprites_list.draw(self.screen)
             pygame.display.flip()
 
         pygame.quit()
@@ -80,8 +83,16 @@ class Game:
                 
             case pygame.K_j:
                 print("j has been pressed")
+                self.p1.lunge()
+            case pygame.K_k:
+                print("k has been pressed")
+                self.p1.parry()
             case pygame.K_l:
                 print("l has been pressed")
+                self.p1.hop_back()
+            case pygame.K_h:
+                print("h has been pressed")
+                self.p1.hurt()
             case _:
                 print("Another key has been pressed")
 
