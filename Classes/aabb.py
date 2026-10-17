@@ -1,5 +1,3 @@
-import pygame
-
 class AABB:
     x: float
     y: float

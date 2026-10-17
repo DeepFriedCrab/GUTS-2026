@@ -9,6 +9,7 @@ class Game:
 
     healthbarL = HealthBar("L",window_dimensions[0])
     healthbarR = HealthBar("R",window_dimensions[0])
+
     def __init__(self):
         pygame.init()
         self.background_colour = (171,170,170)
@@ -37,6 +38,7 @@ class Game:
         while running:
             dt = clock.tick(60)
 
+            # ------------- check events ---------------- #
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     running = False
@@ -47,7 +49,11 @@ class Game:
 
                 elif event.type == pygame.KEYUP:
                     self.parse_keyup(event.key)
-            
+
+            # ----------------- player stuff ------------------- #
+            # check collisions
+            self.handle_collision(self.p1, self.p2)
+
             # tick player logic
             self.p1.tick(dt)
             self.p2.tick(dt)
@@ -60,7 +66,8 @@ class Game:
             if self.p1.x >= self.p2.x:
                 self.p2.facing = Facing.LEFT
                 self.p1.facing = Facing.RIGHT
-            
+
+            # ------------ drawing stuff ------------- #
             self.screen.fill(self.background_colour)
             pygame.draw.rect(self.screen, (0,0,0), pygame.Rect(0,self.ground_y, self.window_dimensions[0] , self.window_dimensions[1] - self.ground_y + 1 ))
 
@@ -92,3 +99,7 @@ class Game:
                 self.p2.press_dict["l"]["down"] = False
             case pygame.K_l:
                 self.p2.press_dict["r"]["down"] = False
+
+    def handle_collision(self, p1, p2):
+        if p1.aabb.is_overlapping(p2.aabb):
+            match p1.boxstate

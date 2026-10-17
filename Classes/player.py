@@ -9,6 +9,11 @@ class Facing(Enum):
     RIGHT = 1
     LEFT = -1
 
+class BoxState(Enum):
+    REST = "Rest"
+    DAMAGE = "Damage"
+    BLOCK = "Block"
+
 class State(Enum):
     IDLE = "Idle"
     FORWARD_WALK = "ForwardWalk"
@@ -76,6 +81,7 @@ class Player(pygame.sprite.Sprite):
     vy: float
     facing: Facing
     state: State
+    boxstate: BoxState
 
     # values to change dash input timing
     held_cap = 15
@@ -89,6 +95,7 @@ class Player(pygame.sprite.Sprite):
         self.image = self.frames[0]
         self.rect = self.image.get_rect(topleft=(x, y))
         self.aabb = AABB(x, y, self.rect.w, self.rect.h)
+        self.boxstate = BoxState.REST
 
         self.vx = 0; self.vy = 0
         self.facing = facing
@@ -146,7 +153,17 @@ class Player(pygame.sprite.Sprite):
         self.animator = Animator(Animation(self.frames, 300,))
         self.state_length = DEFAULT_LENGTHS.get(state,0)
 
+        # change bounding box state based on new state
+        match state:
+            case State.DASH_FORWARD:
+                self.boxstate = BoxState.DAMAGE
+            case State.PARRY:
+                self.boxstate = BoxState.BLOCK
+            case _:
+                self.boxstate = BoxState.REST
+
     def tick(self, dt):
+        print(self.boxstate)
         # check for a dash move
         parry = self.check_parry(self.press_dict)
         l_dash = self.increment_timers(self.press_dict["l"])
@@ -192,7 +209,6 @@ class Player(pygame.sprite.Sprite):
         return int(self.press_dict["r"]["down"]) - int(self.press_dict["l"]["down"])
 
     def _update_state(self, parry=False):
-        print(self.state)
         if self.free:
             direction = self._input_direction()
             match (int(self.press_dict["r"]["down"]), int(self.press_dict["l"]["down"])):
