@@ -66,9 +66,9 @@ def get_asset(x):
         case State.PARRY:
            frames = load_frames("Assets/stick/block") 
         case State.HURT:
-           frames = load_frames("Assets/stick/idle") 
+           frames = load_frames("Assets/stick/hurt") 
         case State.TIRED:
-           frames = load_frames("Assets/stick/idle") 
+           frames = load_frames("Assets/stick/tired") 
     return frames
 
 
