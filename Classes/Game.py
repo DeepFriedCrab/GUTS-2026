@@ -1,19 +1,6 @@
 import pygame
-import os
 from Classes.player import Player, Facing
 from Classes.healthBar import HealthBar
-
-
-
-class Testface(pygame.sprite.Sprite):
-
-    def __init__(self ):
-       pygame.sprite.Sprite.__init__(self)
-       self.image = testface
-       self.rect = self.image.get_rect(center=(30,30))
-
-    def move(self):
-        self.rect.x += 1
 
 
 class Game:
