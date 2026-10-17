@@ -300,10 +300,10 @@ class Player(pygame.sprite.Sprite):
                 self.vx *= 0.5
                 if l_dash:
                     self.set_state(State.DASH_BACK if self.facing == Facing.LEFT else State.DASH_FORWARD)
-                    self.vx -= DASH_SPEED
+                    self.vx -= DASH_SPEED * (0.5 if self.state == State.DASH_BACK else 1)
                 elif r_dash:
                     self.set_state(State.DASH_BACK if self.facing == Facing.RIGHT else State.DASH_FORWARD)
-                    self.vx += DASH_SPEED
+                    self.vx += DASH_SPEED * (0.5 if self.state == State.DASH_BACK else 1)
                 else:
                     speed = BACKWARD_SPEED if self.state == State.BACKWARD_WALK else WALK_SPEED
                     self.vx += self._input_direction() * speed * 0.5
