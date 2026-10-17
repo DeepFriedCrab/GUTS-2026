@@ -10,8 +10,10 @@ screen.fill(background_colour)
 pygame.display.flip()
 
 class Player:
-    x, y = 0
-    vx, vy = 0
+    x = 0
+    y = 0
+    vx = 0
+    vy = 0
 
     facing = "right"
 
