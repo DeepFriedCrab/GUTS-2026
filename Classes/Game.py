@@ -4,7 +4,7 @@ from Classes.player import Player, Facing
 from Classes.spritesheet import SpriteSheet
 from Classes.healthBar import HealthBar
 
-testface = pygame.image.load(os.path.join('assets/stickman_test.png'))
+testface = pygame.image.load(os.path.join('Assets/stickman_test.png'))
 
 class Testface(pygame.sprite.Sprite):
 
@@ -21,17 +21,17 @@ class Game:
     window_dimensions =  (1200, 800)
     ground_y = 4*window_dimensions[1]/5 
 
-    healthbarL = HealthBar("L",ground_y,window_dimensions[0])
-    healthbarR = HealthBar("R",ground_y,window_dimensions[0])
+    healthbarL = HealthBar("L",window_dimensions[0])
+    healthbarR = HealthBar("R",window_dimensions[0])
     def __init__(self):
         pygame.init()
-        self.background_colour = (255,255,255)
+        self.background_colour = (171,170,170)
         self.screen = pygame.display.set_mode(self.window_dimensions)
 
         pygame.display.set_caption('2Fight')
 
         self.all_sprites_list = pygame.sprite.Group()
-        self.sheet = SpriteSheet(os.path.join('assets', 'stickman_test.png'), scale=2)
+        self.sheet = SpriteSheet(os.path.join('Assets', 'stickman_test.png'), scale=2)
         floor_y = self.ground_y - self.sheet.size[1]
         self.p1 = Player(self.sheet, 50, floor_y)
         self.p2 = Player(self.sheet, 450, floor_y, Facing.LEFT)
@@ -64,7 +64,7 @@ class Game:
             self.p2.tick(dt)
 
             self.screen.fill(self.background_colour)
-            pygame.draw.rect(self.screen, (0,150,0), pygame.Rect(0,self.ground_y, self.window_dimensions[0] , self.window_dimensions[1] - self.ground_y + 1 ))
+            pygame.draw.rect(self.screen, (0,0,0), pygame.Rect(0,self.ground_y, self.window_dimensions[0] , self.window_dimensions[1] - self.ground_y + 1 ))
 
             #box = self.all_sprites_list.sprites()[0].move()
             self.all_sprites_list.draw(self.screen)
