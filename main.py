@@ -1,4 +1,5 @@
 import pygame
+from Classes.player import Player
 
 background_colour = (255,255,255)
 (width, height) = (300, 200)
@@ -9,16 +10,9 @@ screen.fill(background_colour)
 
 pygame.display.flip()
 
-class Player:
-    x = 0
-    y = 0
-    vx = 0
-    vy = 0
+p1 = Player()
+p2 = Player()
 
-    facing = "right"
-
-    parrying = False
-  
 running = True
 while running:
     for event in pygame.event.get():
