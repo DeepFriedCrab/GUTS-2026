@@ -15,5 +15,5 @@ class AABB:
 
     def is_overlapping(self, other):
         return (self.x < other.x + other.w and self.x + self.w > other.x and
-                self.y < other.y + other.h and self.y + other.h > other.y)
+                self.y < other.y + other.h and self.y + self.h > other.y)
 
