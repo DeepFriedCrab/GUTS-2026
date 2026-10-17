@@ -142,8 +142,8 @@ class Game:
     def check_wall_collision(self, player):
         if player.x < -25:
             player.vx = 0
-            player.x = 0
+            player.x = -25
 
         elif player.x + player.aabb.w > self.window_dimensions[0] + 25:
             player.vx = 0
-            player.x = self.window_dimensions[0] - player.aabb.w
+            player.x = self.window_dimensions[0] - player.aabb.w + 25
