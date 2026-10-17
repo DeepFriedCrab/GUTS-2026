@@ -35,11 +35,11 @@ class Game:
     def run(self):
         clock = pygame.time.Clock()
         running = True 
-        
+        in_round = True
         while running:
             dt = clock.tick(60)
-
-            # ------------- check events ---------------- #
+            
+        
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     running = False
@@ -60,19 +60,30 @@ class Game:
             # tick player logic
             self.p1.tick(dt)
             self.p2.tick(dt)
+            
+            if in_round:
+                # Flips players
+                if self.p1.x < self.p2.x:
+                    self.p1.facing = Facing.LEFT
+                    self.p2.facing = Facing.RIGHT
 
-            # Flips players
-            if self.p1.x < self.p2.x:
-                self.p1.facing = Facing.LEFT
-                self.p2.facing = Facing.RIGHT
+                if self.p1.x >= self.p2.x:
+                    self.p2.facing = Facing.LEFT
+                    self.p1.facing = Facing.RIGHT
 
-            if self.p1.x >= self.p2.x:
-                self.p2.facing = Facing.LEFT
-                self.p1.facing = Facing.RIGHT
+            if in_round:
+                # --------------- health stuff --------------------- #
+                self.healthbarL.setHealth(self.p1.health)
+                self.healthbarR.setHealth(self.p2.health)
 
-            # --------------- health stuff --------------------- #
-            self.healthbarL.setHealth(self.p1.health)
-            self.healthbarR.setHealth(self.p2.health)
+
+                if self.p1.health == 0:
+                    self.p1.set_state(State.DEAD)
+                    in_round = False
+                if self.p2.health == 0:
+                    self.p2.set_state(State.DEAD)
+                    in_round = False
+
 
             # ------------ drawing stuff ------------- #
             self.screen.fill(self.background_colour)
@@ -146,4 +157,6 @@ class Game:
 
         elif player.x + player.aabb.w > self.window_dimensions[0] + 25:
             player.vx = 0
+
             player.x = self.window_dimensions[0] - player.aabb.w + 25
+

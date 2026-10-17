@@ -9,6 +9,9 @@ class HealthBar(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
         self.sprite_dict={}
         self.side= side
+
+        self.sprite_dict[0] =  self.image = pygame.image.load(os.path.join('Assets/healthBar/Empty.png'))
+
         for i in range(1,4):
             self.sprite_dict[i] = pygame.image.load(os.path.join('Assets/healthBar/'+self.side+str(i)+'.png'))
             self.sprite_dict[i] = pygame.transform.scale(self.sprite_dict[i], (580,self.sprite_dict[i].get_height()))

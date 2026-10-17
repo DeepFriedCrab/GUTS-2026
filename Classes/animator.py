@@ -1,16 +1,20 @@
 import json
 import os
-
+import math
 import pygame
 
 
 class Animation:
-    def __init__(self, frames, duration):
+    def __init__(self, frames, duration,type_):
+       
         order = list(range(len(frames)))
         self.frames = [frames[i] for i in order]
         self.flipped = [pygame.transform.flip(frame, True, False) for frame in self.frames]
         self.durations = [duration for i in order]
         self.length = duration*(len(frames))
+        if type_ == "once":
+            self.length = math.inf
+
 
     def frame_at(self, time, loop=True, flip=False):
         frames = self.flipped if flip else self.frames
