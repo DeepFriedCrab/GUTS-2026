@@ -69,55 +69,7 @@ def fill(surface, color):
             a = surface.get_at((x, y))[3]
             surface.set_at((x, y), pygame.Color(r, g, b, a))
 
-# Loads sprite in silly style
-sprite_dict = {
-    "idle": load_frames("Assets/stick/idle"),
-    "walkfoward": load_frames("Assets/stick/walkfoward") ,
-    "walkback": load_frames("Assets/stick/walkback") ,
-    "dashForward": load_frames("Assets/stick/dashFoward") ,
-    "dashBack": load_frames("Assets/stick/dashBack") ,
-    "block": load_frames("Assets/stick/block") ,
-    "sucblock": load_frames("Assets/stick/succesffulblock" ) ,
-    "hurt": load_frames("Assets/stick/hurt") ,
-    "tired": load_frames("Assets/stick/tired"),
-    "dead":load_frames("Assets/stick/defete")
-}
 
-# Recolours the frames
-for frames in list(sprite_dict.values()):
-    for frame in frames:
-        fill(frame, pygame.Color(255,255,255))
-
-for fram in sprite_dict["hurt"]:
-    fill(fram, pygame.Color(255,0,0))
-for fram in sprite_dict["sucblock"]:
-    fill(fram, pygame.Color(103,235,252))
-
-
-def get_asset(x):
-    frames = []
-    match x:
-        case State.IDLE:
-           frames = sprite_dict["idle"]
-        case State.FORWARD_WALK:
-           frames = sprite_dict["walkfoward"]
-        case State.BACKWARD_WALK:
-           frames = sprite_dict["walkback"]
-        case State.DASH_FORWARD:
-           frames = sprite_dict["dashForward"]
-        case State.DASH_BACK:
-           frames = sprite_dict["dashBack"]
-        case State.PARRY:
-           frames = sprite_dict["block"]
-        case State.HURT:
-           frames = sprite_dict["hurt"]
-        case State.TIRED:
-           frames = sprite_dict["tired"]
-        case State.DEAD:
-            frames = sprite_dict["dead"]
-        case State.SUCCESSFUL_PARRY:
-            frames = sprite_dict["sucblock"]
-    return frames
 
 
 class Player(pygame.sprite.Sprite):
@@ -135,16 +87,46 @@ class Player(pygame.sprite.Sprite):
     since_cap = 15
 
     def __init__(self , x, y, facing=Facing.RIGHT):
+
+        # Loads sprite in silly style
+        self.sprite_dict = {
+            "idle": load_frames("Assets/stick/idle"),
+            "walkfoward": load_frames("Assets/stick/walkfoward") ,
+            "walkback": load_frames("Assets/stick/walkback") ,
+            "dashForward": load_frames("Assets/stick/dashFoward") ,
+            "dashBack": load_frames("Assets/stick/dashBack") ,
+            "block": load_frames("Assets/stick/block") ,
+            "sucblock": load_frames("Assets/stick/succesffulblock" ) ,
+            "hurt": load_frames("Assets/stick/hurt") ,
+            "tired": load_frames("Assets/stick/tired"),
+            "dead":load_frames("Assets/stick/defete")
+        }
+
+        # Recolours the frames
+        for sprite_frames in list(self.sprite_dict.values()):
+            for frame in sprite_frames:
+                if facing==Facing.LEFT:
+                    fill(frame, pygame.Color(255,255,255))
+                else:
+                    fill(frame, pygame.Color(210,210,210))
+
+        for fram in self.sprite_dict["hurt"]:
+            fill(fram, pygame.Color(255,0,0))
+        for fram in self.sprite_dict["sucblock"]:
+            fill(fram, pygame.Color(103,235,252))
+
+        
         pygame.sprite.Sprite.__init__(self)
         self.state = State.IDLE
         self.set_state(State.IDLE)
-        self.frames = get_asset(self.state)
+        self.frames = self.get_asset(self.state)
         self.image = self.frames[0]
         self.rect = self.image.get_rect(topleft=(x, y))
         self.aabb = AABB(x, y, self.rect.w, self.rect.h)
         self.boxstate = BoxState.REST
         self.health = 3
         self.parryTimer = 1000000000000
+
 
         self.vx = 0
         self.facing = facing
@@ -169,6 +151,36 @@ class Player(pygame.sprite.Sprite):
         self.state_length = 0
 
 
+
+
+
+
+
+    def get_asset(self, x):
+        frames = []
+        match x:
+            case State.IDLE:
+                frames = self.sprite_dict["idle"]
+            case State.FORWARD_WALK:
+                frames = self.sprite_dict["walkfoward"]
+            case State.BACKWARD_WALK:
+                frames = self.sprite_dict["walkback"]
+            case State.DASH_FORWARD:
+                frames = self.sprite_dict["dashForward"]
+            case State.DASH_BACK:
+                frames = self.sprite_dict["dashBack"]
+            case State.PARRY:
+                frames = self.sprite_dict["block"]
+            case State.HURT:
+                frames = self.sprite_dict["hurt"]
+            case State.TIRED:
+                frames = self.sprite_dict["tired"]
+            case State.DEAD:
+                frames = self.sprite_dict["dead"]
+            case State.SUCCESSFUL_PARRY:
+                frames = self.sprite_dict["sucblock"]
+        return frames
+
     @property
     def x(self):
         return self.aabb.x
@@ -192,7 +204,7 @@ class Player(pygame.sprite.Sprite):
         self.prevState = self.state
         self.state = state
         self.state_time = 0
-        self.frames = get_asset(self.state)
+        self.frames = self.get_asset(self.state)
         self.animator = Animator(Animation(self.frames, 300,"once" if self.state == State.DEAD else "repeat"))
         print(state)
         if state != State.SUCCESSFUL_PARRY:

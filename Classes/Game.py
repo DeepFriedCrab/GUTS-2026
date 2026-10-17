@@ -90,9 +90,10 @@ class Game:
 
             # ------------ drawing stuff ------------- #
             self.screen.fill(self.background_colour)
+            self.all_sprites_list.draw(self.screen)
             pygame.draw.rect(self.screen, (255,255,255), pygame.Rect(0,self.ground_y, self.window_dimensions[0] , self.window_dimensions[1] - self.ground_y + 1 ))
 
-            self.all_sprites_list.draw(self.screen)
+            
             pygame.display.flip()
 
         pygame.quit()
@@ -149,10 +150,14 @@ class Game:
                     # parry doesnt carry tired state
                     self.p1.parryTimer = 0
                     self.p1.set_state(State.SUCCESSFUL_PARRY)
+
+
                 case (BoxState.DAMAGE, BoxState.BLOCK):
                     # parry doesnt carry tired state
                     self.p2.parryTimer = 0
                     self.p2.set_state(State.SUCCESSFUL_PARRY)
+                    
+
                 case (BoxState.DAMAGE, BoxState.DAMAGE):
                     # bounce apart when two attacks meet
                     self.p1.bounce()
