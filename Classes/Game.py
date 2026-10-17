@@ -1,5 +1,5 @@
 import pygame
-from Classes.player import Player, Facing, BoxState
+from Classes.player import Player, Facing, BoxState,State
 from Classes.healthBar import HealthBar
 
 
@@ -106,10 +106,12 @@ class Game:
                 case (BoxState.REST, BoxState.DAMAGE):
                     # damage p1
                     print("DAMAGE P1")
+                    self.p1.set_state(State.HURT)
                     pass
                 case (BoxState.DAMAGE, BoxState.REST):
                     # damage p2
                     print("DAMAGE P2")
+                    self.p2.set_state(State.HURT)
                     pass
                 case (BoxState.BLOCK, BoxState.DAMAGE):
                     # parry doesnt carry tired state
