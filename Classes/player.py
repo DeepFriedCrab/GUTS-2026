@@ -26,7 +26,7 @@ DEFAULT_LENGTHS = {
     State.DASH_BACK: 300,
     State.PARRY: 250,
     State.HURT: 400,
-    State.TIRED: 500,
+    State.TIRED: 400,
 }
 
 WALK_SPEED = 6
