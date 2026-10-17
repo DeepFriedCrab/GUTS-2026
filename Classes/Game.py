@@ -52,7 +52,7 @@ class Game:
 
             # ----------------- player stuff ------------------- #
             # check collisions
-            self.handle_collision(self.p1, self.p2)
+            self.handle_collision()
 
             # tick player logic
             self.p1.tick(dt)
@@ -100,9 +100,9 @@ class Game:
             case pygame.K_l:
                 self.p2.press_dict["r"]["down"] = False
 
-    def handle_collision(self, p1, p2):
-        if p1.aabb.is_overlapping(p2.aabb):
-            match (p1.boxstate, p2.boxstate):
+    def handle_collision(self):
+        if self.p1.aabb.is_overlapping(self.p2.aabb):
+            match (self.p1.boxstate, self.p2.boxstate):
                 case (BoxState.REST, BoxState.DAMAGE):
                     # damage p1
                     print("DAMAGE P1")
@@ -122,6 +122,8 @@ class Game:
                 case (BoxState.DAMAGE, BoxState.DAMAGE):
                     # bounce apart
                     print("BOUNCE APART")
+                    self.p1.bounce()
+                    self.p2.bounce()
                     pass
                 case _:
                     print("calm")

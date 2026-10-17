@@ -79,6 +79,7 @@ class Player(pygame.sprite.Sprite):
     facing: Facing
     state: State
     boxstate: BoxState
+    health: int
 
     # values to change dash input timing
     held_cap = 15
@@ -93,6 +94,7 @@ class Player(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(topleft=(x, y))
         self.aabb = AABB(x, y, self.rect.w, self.rect.h)
         self.boxstate = BoxState.REST
+        self.health = 3
 
         self.vx = 0; self.vy = 0
         self.facing = facing
@@ -257,3 +259,10 @@ class Player(pygame.sprite.Sprite):
 
         if abs(self.vx) < 0.01:
             self.vx = 0
+
+    def bounce(self):
+        self.set_state(State.DASH_BACK)
+        if self.facing == Facing.LEFT:
+            self.vx -= DASH_SPEED * 2
+        elif self.facing == Facing.RIGHT:
+            self.vx += DASH_SPEED * 2
