@@ -45,7 +45,7 @@ class Player(pygame.sprite.Sprite):
 
     # values to change dash input timing
     held_cap = 15
-    since_cap = 30
+    since_cap = 15
 
     def __init__(self, sheet: SpriteSheet, x, y, facing=Facing.RIGHT):
         pygame.sprite.Sprite.__init__(self)
