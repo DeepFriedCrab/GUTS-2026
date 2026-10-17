@@ -5,7 +5,6 @@ from Classes.player import Player
 
 testface = pygame.image.load(os.path.join('assets/stickman_test.png'))
 
-
 class Testface(pygame.sprite.Sprite):
 
     def __init__(self ):
@@ -18,20 +17,17 @@ class Testface(pygame.sprite.Sprite):
 
 
 class Game:
-    p1 = Player(testface, 0, 0, 50, 100)
-    p2 = Player(testface, 0, 0, 50, 100)
-
     def __init__(self):
         pygame.init()
         self.background_colour = (255,255,255)
         self.window_dimensions =  (640, 360)
-        self.ground_y = 4*self.window_dimensions[1]/5 
+        self.ground_y = 4*self.window_dimensions[1]/4.5
         self.screen = pygame.display.set_mode(self.window_dimensions, pygame.SCALED)
         pygame.display.set_caption('2Fight')
 
         self.all_sprites_list = pygame.sprite.Group()
-        self.p1.x = 50
-        self.p1.y = 50  
+        self.p1 = Player(testface, 50, 50, scale=2)
+        self.p2 = Player(testface, 0, 0, scale=2)
 
         self.all_sprites_list.add(self.p1)
 
@@ -57,13 +53,15 @@ class Game:
             self.p2.move()
                 
             self.screen.fill(self.background_colour)
-            pygame.draw.rect(self.screen, (0,0,0), pygame.Rect(0,self.ground_y, self.window_dimensions[0] , self.window_dimensions[1] - self.ground_y ))  
+            pygame.draw.rect(self.screen, (0,150,0), pygame.Rect(0,self.ground_y, self.window_dimensions[0] , self.window_dimensions[1] - self.ground_y + 1 ))  
 
             self.all_sprites_list.update() 
             #box = self.all_sprites_list.sprites()[0].move()
             self.all_sprites_list.draw(self.screen) 
-            clock.tick(60) 
+            clock.tick(60)
             pygame.display.flip()
+
+        pygame.quit()
 
     def parse_keydown(self, key):
         match key:
