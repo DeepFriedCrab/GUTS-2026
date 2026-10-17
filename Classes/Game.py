@@ -129,6 +129,3 @@ class Game:
                     # bounce apart when two attacks meet
                     self.p1.bounce()
                     self.p2.bounce()
-                    pass
-                case _:
-                    pass
