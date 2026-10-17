@@ -18,12 +18,17 @@ class Player(pygame.sprite.Sprite):
     action = "still"
 
     def move(self):
+        self.vx *= 0.5
+        
         match (self.ldown, self.rdown):
             case (False, False):
                 pass
             case (False, True):
-                self.rect.x += 3
+                self.vx += 2
             case (True, False):
-                self.rect.x -= 3
+                self.vx -= 2
             case (True, True):
                 pass
+
+        self.rect.x += self.vx
+        self.rect.y += self.vy
