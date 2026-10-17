@@ -18,6 +18,9 @@ class Player(pygame.sprite.Sprite):
     facing: Facing
     action: Action
 
+    ldown = False
+    rdown = False
+
     def __init__(self, sprite, x, y, w, h):
         pygame.sprite.Sprite.__init__(self)
         self.image = sprite
@@ -45,4 +48,17 @@ class Player(pygame.sprite.Sprite):
         self.aabb.y = round(y)
 
     def move(self):
-        self.x += 1
+        self.vx *= 0.5
+        
+        match (self.ldown, self.rdown):
+            case (False, False):
+                pass
+            case (False, True):
+                self.vx += 2
+            case (True, False):
+                self.vx -= 2
+            case (True, True):
+                pass
+
+        self.x += self.vx
+        self.y += self.vy

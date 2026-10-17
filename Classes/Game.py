@@ -1,6 +1,6 @@
 import pygame
 import os
-from classes.player import Player
+from Classes.player import Player
 
 
 testface = pygame.image.load(os.path.join('testface.png'))
@@ -16,53 +16,82 @@ class Testface(pygame.sprite.Sprite):
     def move(self):
         self.rect.x += 1
 
-def parse_keydown(key):
-    match key:
-        case pygame.K_a:
-            print("a has been pressed")
-        case pygame.K_d:
-            print("d has been pressed")
-            Player
-        case pygame.K_j:
-            print("j has been pressed")
-        case pygame.K_l:
-            print("l has been pressed")
-        case _:
-            print("Another key has been pressed")
-
 
 class Game:
+    p1 = Player(testface, 0, 0, 50, 100)
+    p2 = Player(testface, 0, 0, 50, 100)
+
     def __init__(self):
         pygame.init()
         self.background_colour = (255,255,255)
 
-        (width, height) = (300, 200)
-        self.screen = pygame.display.set_mode((width, height))
+        self.window_dimensions =  (1200, 800)
+        self.ground_y = 4*self.window_dimensions[1]/5 
+        self.screen = pygame.display.set_mode(self.window_dimensions)
         pygame.display.set_caption('2Fight')
 
         self.all_sprites_list = pygame.sprite.Group()
-        object_ = Player(testface, 50, 50, 10, 10)
+        self.p1.x = 50
+        self.p1.y = 50  
 
-        self.all_sprites_list.add(object_)
+        self.all_sprites_list.add(self.p1)
 
     def run(self):
         clock = pygame.time.Clock()
         running = True 
         
         while running:
-          for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                running = False
-    
-            elif event.type == pygame.KEYDOWN:
-                parse_keydown(event.key)
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    running = False
+
+                # checks key inputs
+                elif event.type == pygame.KEYDOWN:
+                    self.parse_keydown(event.key)
+
+                elif event.type == pygame.KEYUP:
+                    self.parse_keyup(event.key)
+            
+            
+            # move players
+            self.p1.move()
+            self.p2.move()
                 
-          self.screen.fill(self.background_colour)
-          self.all_sprites_list.update() 
-          box = self.all_sprites_list.sprites()[0].move()
-          self.all_sprites_list.draw(self.screen) 
-          clock.tick(60) 
-          pygame.display.flip()
+            self.screen.fill(self.background_colour)
+            pygame.draw.rect(self.screen, (0,0,0), pygame.Rect(0,self.ground_y, self.window_dimensions[0] , self.window_dimensions[1] - self.ground_y ))  
 
+            self.all_sprites_list.update() 
+            #box = self.all_sprites_list.sprites()[0].move()
+            self.all_sprites_list.draw(self.screen) 
+            clock.tick(60) 
+            pygame.display.flip()
 
+    def parse_keydown(self, key):
+        match key:
+            case pygame.K_a:
+                print("a has been pressed")
+                self.p1.ldown = True
+            case pygame.K_d:
+                print("d has been pressed")
+                self.p1.rdown = True
+            case pygame.K_j:
+                print("j has been pressed")
+            case pygame.K_l:
+                print("l has been pressed")
+            case _:
+                print("Another key has been pressed")
 
+    def parse_keyup(self, key):
+            match key:
+                case pygame.K_a:
+                    print("a has been lifted")
+                    self.p1.ldown = False
+                case pygame.K_d:
+                    print("d has been lifted")
+                    self.p1.rdown = False
+                case pygame.K_j:
+                    print("j has been lifted")
+                case pygame.K_l:
+                    print("l has been lifted")
+                case _:
+                    print("Another key has been lifted")
