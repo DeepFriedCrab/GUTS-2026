@@ -116,12 +116,18 @@ class Game:
                         self.p1.set_state(State.HURT)
                         self.p1.damage()
                         self.p1.bounce()
+
+                        # bounce puncher back
+                        self.p2.bounce()
                 case (BoxState.DAMAGE, BoxState.REST):
                     # damage p2
                     if self.p2.parryTimer > 50: 
                         self.p2.set_state(State.HURT)
                         self.p2.damage()
                         self.p2.bounce()
+
+                        # bounch puncher back
+                        self.p1.bounce()
                 case (BoxState.BLOCK, BoxState.DAMAGE):
                     # parry doesnt carry tired state
                     self.p1.parryTimer = 0
