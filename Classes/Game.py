@@ -13,7 +13,7 @@ class Game:
     def __init__(self):
         pygame.init()
         self.background_colour = (25,24,26) #(171,170,170)
-        self.screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
+        self.screen = pygame.display.set_mode(self.window_dimensions)
 
         pygame.display.set_caption('2Fight')
 
