@@ -340,9 +340,17 @@ class Player(pygame.sprite.Sprite):
                 self.vx *= 0.5
                 if l_dash:
                     self.set_state(State.DASH_BACK if self.facing == Facing.LEFT else State.DASH_FORWARD)
+                    if (self.state == State.DASH_FORWARD):
+                        pygame.mixer.Sound.play(self.punch)
+                    elif (self.state == State.DASH_BACK):
+                        pygame.mixer.Sound.play(self.back_dash)
                     self.vx -= DASH_SPEED * (0.7 if self.state == State.DASH_BACK else 1)
                 elif r_dash:
                     self.set_state(State.DASH_BACK if self.facing == Facing.RIGHT else State.DASH_FORWARD)
+                    if (self.state == State.DASH_FORWARD):
+                        pygame.mixer.Sound.play(self.punch)
+                    elif (self.state == State.DASH_BACK):
+                        pygame.mixer.Sound.play(self.back_dash)
                     self.vx += DASH_SPEED * (0.7 if self.state == State.DASH_BACK else 1)
                 else:
                     speed = BACKWARD_SPEED if self.state == State.BACKWARD_WALK else WALK_SPEED
