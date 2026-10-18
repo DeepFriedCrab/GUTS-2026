@@ -37,9 +37,16 @@ class Game:
         while True:
             dt = clock.tick(60)
 
+            # display logo
             self.screen.fill(self.background_colour)
             self.all_sprites_list.draw(self.screen)
             logo.update(dt)
+
+            # display startup text
+            font = pygame.font.SysFont("consolas", 36)
+            txtsurf = font.render("< press any button to start >", True, (255,255,255))
+            self.screen.blit(txtsurf,(750 - txtsurf.get_width() // 2, 800 - txtsurf.get_height() // 2))
+            #pygame.display.update()
 
             pygame.display.flip()
             
@@ -51,6 +58,7 @@ class Game:
                     self.all_sprites_list.add(self.p1)
                     self.all_sprites_list.add(self.p2)
                     self.run()
+                    
     
     def run(self):
         clock = pygame.time.Clock()

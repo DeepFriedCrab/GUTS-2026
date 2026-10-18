@@ -14,7 +14,7 @@ class Logo(pygame.sprite.Sprite):
         self.logo_animator = Animator(Animation(self.logo_frames, 100, 'repeat'))
 
         self.image = self.logo_frames[0]
-        self.rect = self.image.get_rect(topleft=(450, 250))
+        self.rect = self.image.get_rect(topleft=(250, 100))
 
     def update(self, dt):
         self.logo_animator.update(dt)
