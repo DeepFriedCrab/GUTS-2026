@@ -44,7 +44,7 @@ class Game:
 
             # display startup text
             font = pygame.font.SysFont("consolas", 36)
-            txtsurf = font.render("< press any button to start >", True, (255,255,255))
+            txtsurf = font.render("< press any button to start >", True, (200,200,200))
             self.screen.blit(txtsurf,(750 - txtsurf.get_width() // 2, 800 - txtsurf.get_height() // 2))
             #pygame.display.update()
 
