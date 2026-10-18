@@ -88,37 +88,6 @@ class Player(pygame.sprite.Sprite):
 
     def __init__(self , x, y, facing=Facing.RIGHT):
 
-
-        # old sprite loading saved here
-        '''
-        # Loads sprite in silly style
-        self.sprite_dict = {
-            "idle": load_frames("Assets/stick/idle"),
-            "walkfoward": load_frames("Assets/stick/walkfoward") ,
-            "walkback": load_frames("Assets/stick/walkback") ,
-            "dashForward": load_frames("Assets/stick/dashFoward") ,
-            "dashBack": load_frames("Assets/stick/dashBack") ,
-            "block": load_frames("Assets/stick/block") ,
-            "sucblock": load_frames("Assets/stick/succesffulblock" ) ,
-            "hurt": load_frames("Assets/stick/hurt") ,
-            "tired": load_frames("Assets/stick/tired"),
-            "dead":load_frames("Assets/stick/defete")
-        }
-
-        # Recolours the frames
-        for sprite_frames in list(self.sprite_dict.values()):
-            for frame in sprite_frames:
-                if facing==Facing.LEFT:
-                    fill(frame, pygame.Color(255,255,255))
-                else:
-                    fill(frame, pygame.Color(210,210,210))
-
-        for fram in self.sprite_dict["hurt"]:
-            fill(fram, pygame.Color(255,0,0))
-        for fram in self.sprite_dict["sucblock"]:
-            fill(fram, pygame.Color(103,235,252))
-        '''
-
         # Loads sprite in silly style
         if facing==Facing.LEFT: player = "p1"
         else: player = "p2"
