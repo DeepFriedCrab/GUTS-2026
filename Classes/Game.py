@@ -225,12 +225,16 @@ class Game:
                     # parry doesnt carry tired state
                     self.p1.parryTimer = 0
                     self.p1.set_state(State.SUCCESSFUL_PARRY)
+                    pygame.mixer.Sound.play(self.p1.parry_shing)
+                    pygame.mixer.Sound.play(self.p1.parry)
 
 
                 case (BoxState.DAMAGE, BoxState.BLOCK):
                     # parry doesnt carry tired state
                     self.p2.parryTimer = 0
                     self.p2.set_state(State.SUCCESSFUL_PARRY)
+                    pygame.mixer.Sound.play(self.p2.parry_shing)
+                    pygame.mixer.Sound.play(self.p2.parry)
                     
 
                 case (BoxState.DAMAGE, BoxState.DAMAGE):
