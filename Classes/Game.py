@@ -32,7 +32,7 @@ class Game:
 
     def Start(self):
         clock = pygame.time.Clock()
-        logo = Logo()
+        logo = Logo('Assets/start/logo/', 100, (250, 100))
         self.all_sprites_list.add(logo)
 
         while True:
@@ -67,11 +67,11 @@ class Game:
         self.all_sprites_list.remove(self.p2)
 
         clock = pygame.time.Clock()
-        logo = Logo()
+        logo = Logo('Assets/end/round_over/', 150, (220, 100))
         self.all_sprites_list.add(logo)
 
         while True:
-            dt = clock.tick(60)
+            dt = clock.tick(200)
 
             # display logo
             self.screen.fill(self.background_colour)
