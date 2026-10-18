@@ -106,7 +106,7 @@ class Player(pygame.sprite.Sprite):
 
         if player == "p1":
             self.moan = pygame.mixer.Sound("Assets/Sounds/Uuugh.wav")
-            self.pant = pygame.mixer.Sound("Assets/Sounds/Pant.wav")
+            self.pant = pygame.mixer.Sound("Assets/Sounds/PantOne.wav")
             self.punch = pygame.mixer.Sound("Assets/Sounds/Punch.wav")
             self.parry = pygame.mixer.Sound("Assets/Sounds/NiceTry.wav")
             self.parry_shing = pygame.mixer.Sound("Assets/Sounds/parry-ultrakill.wav")
@@ -115,7 +115,7 @@ class Player(pygame.sprite.Sprite):
 
         if player == "p2":
             self.moan = pygame.mixer.Sound("Assets/Sounds/P2Uuugh.wav")
-            self.pant = pygame.mixer.Sound("Assets/Sounds/Pant.wav")
+            self.pant = pygame.mixer.Sound("Assets/Sounds/PantOne.wav")
             self.punch = pygame.mixer.Sound("Assets/Sounds/P2Punch.wav")
             self.parry = pygame.mixer.Sound("Assets/Sounds/P2BlockedYou.wav")
             self.parry_shing = pygame.mixer.Sound("Assets/Sounds/parry-ultrakill.wav")
