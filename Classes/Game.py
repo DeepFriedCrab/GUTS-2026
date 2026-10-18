@@ -7,6 +7,7 @@ class Game:
     window_dimensions =  (1500, 1000)
     ground_y = 4*window_dimensions[1]/5 
 
+
     def __init__(self):
         pygame.init()
         self.background_colour = (25,24,26) #(171,170,170)
@@ -16,8 +17,8 @@ class Game:
 
         self.all_sprites_list = pygame.sprite.Group()
 
-        self.healthbarL = HealthBar("L",self.window_dimensions[0])
-        self.healthbarR = HealthBar("R",self.window_dimensions[0])
+        self.healthbarL = HealthBar("Left",self.window_dimensions[0])
+        self.healthbarR = HealthBar("Right",self.window_dimensions[0])
        
         self.p1 = Player( 0, 0, Facing.LEFT)
         self.p2 = Player( 0, 0, Facing.RIGHT)
@@ -155,6 +156,9 @@ class Game:
 
 
             # ------------ drawing stuff ------------- #
+            self.healthbarL.update(dt)
+            self.healthbarR.update(dt)
+
             self.screen.fill(self.background_colour)
             self.all_sprites_list.draw(self.screen)
             ground = pygame.image.load('Assets/Ground/Ground.png')
