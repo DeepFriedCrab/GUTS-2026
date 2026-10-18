@@ -137,21 +137,21 @@ class Player(pygame.sprite.Sprite):
 
         if player == "p1":
             self.moan = pygame.mixer.Sound("Assets/Sounds/Uuugh.wav")
-            self.pant = pygame.mixer.Sound("Assets/Sounds/Uuugh.wav")
-            self.punch = pygame.mixer.Sound("Assets/Sounds/Uuugh.wav")
-            self.parry = pygame.mixer.Sound("Assets/Sounds/Uuugh.wav")
-            self.parry_shing = pygame.mixer.Sound("Assets/Sounds/Uuugh.wav")
-            self.back_dash = pygame.mixer.Sound("Assets/Sounds/Uuugh.wav")
-            self.dead = pygame.mixer.Sound("Assets/Sounds/Uuugh.wav")
+            self.pant = pygame.mixer.Sound("Assets/Sounds/Pant.wav")
+            self.punch = pygame.mixer.Sound("Assets/Sounds/Punch.wav")
+            self.parry = pygame.mixer.Sound("Assets/Sounds/NiceTry.wav")
+            self.parry_shing = pygame.mixer.Sound("Assets/Sounds/parry-ultrakill.wav")
+            self.back_dash = pygame.mixer.Sound("Assets/Sounds/TooSlow.wav")
+            self.dead = pygame.mixer.Sound("Assets/Sounds/Dead.wav")
 
         if player == "p2":
-            self.moan = pygame.mixer.Sound("Assets/Sounds/Uuugh.wav")
-            self.pant = pygame.mixer.Sound("Assets/Sounds/Uuugh.wav")
-            self.punch = pygame.mixer.Sound("Assets/Sounds/Uuugh.wav")
-            self.parry = pygame.mixer.Sound("Assets/Sounds/Uuugh.wav")
-            self.parry_shing = pygame.mixer.Sound("Assets/Sounds/Uuugh.wav")
-            self.back_dash = pygame.mixer.Sound("Assets/Sounds/Uuugh.wav")
-            self.dead = pygame.mixer.Sound("Assets/Sounds/Uuugh.wav")
+            self.moan = pygame.mixer.Sound("Assets/Sounds/P2Uuugh.wav")
+            self.pant = pygame.mixer.Sound("Assets/Sounds/P2Pant.wav")
+            self.punch = pygame.mixer.Sound("Assets/Sounds/P2Punch.wav")
+            self.parry = pygame.mixer.Sound("Assets/Sounds/P2BlockedYou.wav")
+            self.parry_shing = pygame.mixer.Sound("Assets/Sounds/parry-ultrakill.wav")
+            self.back_dash = pygame.mixer.Sound("Assets/Sounds/YouMissed.wav")
+            self.dead = pygame.mixer.Sound("Assets/Sounds/P2Dead.wav")
         
         pygame.sprite.Sprite.__init__(self)
         self.state = State.IDLE
