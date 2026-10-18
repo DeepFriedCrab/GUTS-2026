@@ -109,6 +109,7 @@ class Game:
             
             for event in pygame.event.get():
                 if event.type == pygame.KEYDOWN:
+                    pygame.mixer.Sound.play(self.ding)
                     if event.key == pygame.K_a:
                         self.all_sprites_list.remove(logo)
                         self.all_sprites_list.remove(logo)
