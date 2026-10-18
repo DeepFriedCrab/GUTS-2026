@@ -104,6 +104,23 @@ class Player(pygame.sprite.Sprite):
             "dead":load_frames("Assets/" + player + "/defete")
         }
 
+        if player == "p1":
+            self.moan = pygame.mixer.Sound("Assets/Sounds/Uuugh.wav")
+            self.pant = pygame.mixer.Sound("Assets/Sounds/Pant.wav")
+            self.punch = pygame.mixer.Sound("Assets/Sounds/Punch.wav")
+            self.parry = pygame.mixer.Sound("Assets/Sounds/NiceTry.wav")
+            self.parry_shing = pygame.mixer.Sound("Assets/Sounds/parry-ultrakill.wav")
+            self.back_dash = pygame.mixer.Sound("Assets/Sounds/TooSlow.wav")
+            self.dead = pygame.mixer.Sound("Assets/Sounds/Dead.wav")
+
+        if player == "p2":
+            self.moan = pygame.mixer.Sound("Assets/Sounds/P2Uuugh.wav")
+            self.pant = pygame.mixer.Sound("Assets/Sounds/Pant.wav")
+            self.punch = pygame.mixer.Sound("Assets/Sounds/P2Punch.wav")
+            self.parry = pygame.mixer.Sound("Assets/Sounds/P2BlockedYou.wav")
+            self.parry_shing = pygame.mixer.Sound("Assets/Sounds/parry-ultrakill.wav")
+            self.back_dash = pygame.mixer.Sound("Assets/Sounds/P2YouMissed.wav")
+            self.dead = pygame.mixer.Sound("Assets/Sounds/P2Dead.wav")
         
         pygame.sprite.Sprite.__init__(self)
         self.state = State.IDLE
@@ -255,6 +272,7 @@ class Player(pygame.sprite.Sprite):
 
     def _update_state(self, parry=False):
         if self.state == State.DEAD:
+            pygame.mixer.Sound.play(self.dead)
             return
         elif self.free:
             
@@ -277,9 +295,11 @@ class Player(pygame.sprite.Sprite):
         elif self.state_time >= self.state_length:
             if self.state == State.DASH_FORWARD :
                 self.set_state(State.TIRED)
+                pygame.mixer.Sound.play(self.pant)
             elif self.state == State.PARRY and self.parryTimer > 50:
 
                 self.set_state(State.TIRED)
+                pygame.mixer.Sound.play(self.pant)
             else:
                 self.set_state(State.IDLE)
 
@@ -289,9 +309,17 @@ class Player(pygame.sprite.Sprite):
                 self.vx *= 0.5
                 if l_dash:
                     self.set_state(State.DASH_BACK if self.facing == Facing.LEFT else State.DASH_FORWARD)
+                    if (self.state == State.DASH_FORWARD):
+                        pygame.mixer.Sound.play(self.punch)
+                    elif (self.state == State.DASH_BACK):
+                        pygame.mixer.Sound.play(self.back_dash)
                     self.vx -= DASH_SPEED * (0.7 if self.state == State.DASH_BACK else 1)
                 elif r_dash:
                     self.set_state(State.DASH_BACK if self.facing == Facing.RIGHT else State.DASH_FORWARD)
+                    if (self.state == State.DASH_FORWARD):
+                        pygame.mixer.Sound.play(self.punch)
+                    elif (self.state == State.DASH_BACK):
+                        pygame.mixer.Sound.play(self.back_dash)
                     self.vx += DASH_SPEED * (0.7 if self.state == State.DASH_BACK else 1)
                 else:
                     speed = BACKWARD_SPEED if self.state == State.BACKWARD_WALK else WALK_SPEED
@@ -321,3 +349,4 @@ class Player(pygame.sprite.Sprite):
     def damage(self):
         if self.prevState != State.HURT:
             self.health -= 1
+            pygame.mixer.Sound.play(self.moan)

@@ -203,9 +203,6 @@ class Game:
                 self.p2.press_dict["l"]["down"] = True
             case pygame.K_l:
                 self.p2.press_dict["r"]["down"] = True
-            case pygame.K_b:
-                moan = pygame.mixer.Sound("Assets/Sounds/Uuugh.wav")
-                pygame.mixer.Sound.play(moan)
 
     def parse_keyup(self, key):
         match key:
