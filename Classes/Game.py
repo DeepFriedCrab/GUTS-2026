@@ -116,7 +116,8 @@ class Game:
             # ------------ drawing stuff ------------- #
             self.screen.fill(self.background_colour)
             self.all_sprites_list.draw(self.screen)
-            pygame.draw.rect(self.screen, (40,40,40), pygame.Rect(0,self.ground_y, self.window_dimensions[0] , self.window_dimensions[1] - self.ground_y + 1 ))
+            ground = pygame.image.load('Assets/Ground/Ground.png')
+            self.screen.blit(ground, (0, self.ground_y))
 
             
             pygame.display.flip()
