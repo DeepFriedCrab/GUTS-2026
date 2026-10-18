@@ -16,9 +16,9 @@ class HealthBar(pygame.sprite.Sprite):
             self.sprite_dict[i] = pygame.image.load(os.path.join('Assets/healthBar/'+self.side+str(i)+'.png'))
             self.sprite_dict[i] = pygame.transform.scale(self.sprite_dict[i], (580,self.sprite_dict[i].get_height()))
  
-        fill(self.sprite_dict[1], pygame.Color(255,0,0))
-        fill(self.sprite_dict[2], pygame.Color(255,255,0))
-        fill(self.sprite_dict[3], pygame.Color(0,255,0))
+        fill(self.sprite_dict[1], pygame.Color(158,29,2))
+        fill(self.sprite_dict[2], pygame.Color(149,167,10))
+        fill(self.sprite_dict[3], pygame.Color(28,97,0))
 
         self.health = 3
         
