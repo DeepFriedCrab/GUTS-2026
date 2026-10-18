@@ -29,6 +29,8 @@ class Game:
         # Who's facing right
         self.facing_right = "p2"
 
+        self.ding = pygame.mixer.Sound("Assets/Sounds/parry-ultrakill.wav")
+
 
     def Start(self):
         clock = pygame.time.Clock()
@@ -53,6 +55,7 @@ class Game:
             
             for event in pygame.event.get():
                 if event.type == pygame.KEYDOWN:
+                    pygame.mixer.Sound.play(self.ding)
                     self.all_sprites_list.remove(logo)
                     self.all_sprites_list.add(self.healthbarL)
                     self.all_sprites_list.add(self.healthbarR)
