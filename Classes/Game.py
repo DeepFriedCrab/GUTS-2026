@@ -7,8 +7,6 @@ class Game:
     window_dimensions =  (1500, 1000)
     ground_y = 4*window_dimensions[1]/5 
 
-    healthbarL = HealthBar("L",window_dimensions[0])
-    healthbarR = HealthBar("R",window_dimensions[0])
 
     def __init__(self):
         pygame.init()
@@ -18,6 +16,9 @@ class Game:
         pygame.display.set_caption('2Fight')
 
         self.all_sprites_list = pygame.sprite.Group()
+
+        self.healthbarL = HealthBar("Left",self.window_dimensions[0])
+        self.healthbarR = HealthBar("Right",self.window_dimensions[0])
        
         self.p1 = Player( 0, 0, Facing.LEFT)
         self.p2 = Player( 0, 0, Facing.RIGHT)
@@ -45,7 +46,7 @@ class Game:
             # display startup text
             font = pygame.font.SysFont("consolas", 36)
             txtsurf = font.render("< press any button to start >", True, (200,200,200))
-            self.screen.blit(txtsurf,(750 - txtsurf.get_width() // 2, 800 - txtsurf.get_height() // 2))
+            self.screen.blit(txtsurf,(self.window_dimensions[0]/2 - txtsurf.get_width() // 2, self.ground_y - txtsurf.get_height() // 2))
             #pygame.display.update()
 
             pygame.display.flip()
@@ -58,15 +59,56 @@ class Game:
                     self.all_sprites_list.add(self.p1)
                     self.all_sprites_list.add(self.p2)
                     self.run()
-                    
+
+    def End(self):
+        self.all_sprites_list.remove(self.healthbarL)
+        self.all_sprites_list.remove(self.healthbarR)
+        self.all_sprites_list.remove(self.p1)
+        self.all_sprites_list.remove(self.p2)
+
+        clock = pygame.time.Clock()
+        logo = Logo()
+        self.all_sprites_list.add(logo)
+
+        while True:
+            dt = clock.tick(60)
+
+            # display logo
+            self.screen.fill(self.background_colour)
+            self.all_sprites_list.draw(self.screen)
+            logo.update(dt)
+
+            # display startup text
+            font = pygame.font.SysFont("consolas", 36)
+            txt1 = font.render("< press 'a' to restart >", True, (200,200,200))
+            txt2 = font.render("< press 'd' to quit >", True, (200,200,200))
+            self.screen.blit(txt1,(self.window_dimensions[0]/2 - txt1.get_width() // 2, self.ground_y - txt1.get_height() // 2))
+            self.screen.blit(txt2,(self.window_dimensions[0]/2 - txt2.get_width() // 2, self.ground_y + 50 - txt2.get_height() // 2))
+            #pygame.display.update()
+
+            pygame.display.flip()
+            
+            for event in pygame.event.get():
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_a:
+                        self.__init__()
+                        self.Start()
+                    elif event.key == pygame.K_d:
+                        pygame.quit()
     
     def run(self):
         clock = pygame.time.Clock()
         running = True 
         in_round = True
+        end_timer = 0
         while running:
             dt = clock.tick(60)
-            
+
+            if not in_round:
+                end_timer += 1
+
+                if end_timer > 100:
+                    self.End()
         
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -114,6 +156,9 @@ class Game:
 
 
             # ------------ drawing stuff ------------- #
+            self.healthbarL.update(dt)
+            self.healthbarR.update(dt)
+
             self.screen.fill(self.background_colour)
             self.all_sprites_list.draw(self.screen)
             ground = pygame.image.load('Assets/Ground/Ground.png')
