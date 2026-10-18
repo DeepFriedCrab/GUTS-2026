@@ -158,8 +158,12 @@ class Game:
             # ------------ drawing stuff ------------- #
             self.healthbarL.update(dt)
             self.healthbarR.update(dt)
-
             self.screen.fill(self.background_colour)
+
+            pygame.draw.rect(self.screen, (78,22,108), pygame.Rect(0,130, self.window_dimensions[0]/3 , 5 ))
+            pygame.draw.rect(self.screen, (66,62,101), pygame.Rect(self.window_dimensions[0]-self.window_dimensions[0]/3,130, self.window_dimensions[0]/3 , 5 ))
+           
+
             self.all_sprites_list.draw(self.screen)
             ground = pygame.image.load('Assets/Ground/Ground.png')
             self.screen.blit(ground, (0, self.ground_y))
