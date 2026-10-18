@@ -29,6 +29,9 @@ class Game:
         # Who's facing right
         self.facing_right = "p2"
 
+        # thud sound
+        self.thud = pygame.mixer.Sound("Assets/Sounds/thud.wav")
+
     def restart(self):
         # move players back
         self.p1.x = 50
@@ -258,6 +261,7 @@ class Game:
 
                 case (BoxState.DAMAGE, BoxState.DAMAGE):
                     # bounce apart when two attacks meet
+                    pygame.mixer.Sound.play(self.thud)
                     self.p1.bounce()
                     self.p2.bounce()
 
