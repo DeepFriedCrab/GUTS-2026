@@ -29,6 +29,20 @@ class Game:
         # Who's facing right
         self.facing_right = "p2"
 
+    def restart(self):
+        # move players back
+        self.p1.x = 50
+        self.p2.x = self.window_dimensions[0] - 50 - self.p2.aabb.w
+        self.p1.rect.y = self.ground_y - self.p1.aabb.h + 70
+        self.p2.rect.y = self.ground_y - self.p2.aabb.h + 70
+        self.facing_right = "p2"
+
+        self.reset_player(self.p1, Facing.LEFT)
+        self.reset_player(self.p2, Facing.RIGHT)
+
+
+        self.run()
+
 
     def Start(self):
         clock = pygame.time.Clock()
@@ -91,8 +105,13 @@ class Game:
             for event in pygame.event.get():
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_a:
-                        self.__init__()
-                        self.Start()
+                        self.all_sprites_list.remove(logo)
+                        self.all_sprites_list.remove(logo)
+                        self.all_sprites_list.add(self.healthbarL)
+                        self.all_sprites_list.add(self.healthbarR)
+                        self.all_sprites_list.add(self.p1)
+                        self.all_sprites_list.add(self.p2)
+                        self.restart()
                     elif event.key == pygame.K_d:
                         pygame.quit()
     
@@ -252,3 +271,34 @@ class Game:
 
             player.x = self.window_dimensions[0] - player.aabb.w + 25
 
+    def reset_player(self, player, facing):
+        player.state = State.IDLE
+        player.set_state(State.IDLE)
+        player.frames = player.get_asset(player.state)
+        player.image = player.frames[0]
+        player.boxstate = BoxState.REST
+        player.health = 3
+        player.parryTimer = 1000000000000
+
+
+        player.vx = 0
+        player.facing = facing
+
+        # dictionary containing keypresses and timers to track them
+        player.press_dict = {
+            "l" : {
+                "held_time": 0,
+                "since_time": float('inf'),
+                "down": False,
+                "prev": False
+            },
+            "r": {
+                "held_time": 0,
+                "since_time": float('inf'),
+                "down": False,
+                "prev": False
+            },
+        }
+
+        player.state_time = 0
+        player.state_length = 0
