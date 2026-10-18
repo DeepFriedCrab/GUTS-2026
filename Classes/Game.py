@@ -29,6 +29,9 @@ class Game:
         # Who's facing right
         self.facing_right = "p2"
 
+
+        self.ding = pygame.mixer.Sound("Assets/Sounds/parry-ultrakill.wav")
+
     def restart(self):
         # move players back
         self.p1.x = 50
@@ -42,6 +45,7 @@ class Game:
 
 
         self.run()
+
 
 
     def Start(self):
@@ -67,6 +71,7 @@ class Game:
             
             for event in pygame.event.get():
                 if event.type == pygame.KEYDOWN:
+                    pygame.mixer.Sound.play(self.ding)
                     self.all_sprites_list.remove(logo)
                     self.all_sprites_list.add(self.healthbarL)
                     self.all_sprites_list.add(self.healthbarR)
@@ -104,6 +109,7 @@ class Game:
             
             for event in pygame.event.get():
                 if event.type == pygame.KEYDOWN:
+                    pygame.mixer.Sound.play(self.ding)
                     if event.key == pygame.K_a:
                         self.all_sprites_list.remove(logo)
                         self.all_sprites_list.remove(logo)
